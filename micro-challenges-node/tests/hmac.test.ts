@@ -2,8 +2,10 @@ import request from 'supertest';
 import crypto from 'crypto';
 import app from '../src/app';
 import { describe, expect, it } from '@jest/globals';
+import dotenv from 'dotenv';
 
-const SECRET = 'Waddimi';
+dotenv.config();
+const SECRET = process.env.SECRET!;
 
 function signBody(body: object) {
   return crypto.createHmac('sha256', SECRET).update(JSON.stringify(body)).digest('hex');

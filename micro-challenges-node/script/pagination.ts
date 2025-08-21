@@ -7,14 +7,15 @@ async function testPagination(page:number | undefined, limit:number | undefined)
     });
     console.log(`Status: ${res.status}`);
     console.log('Response:', res.data);
-  } catch (err) {
-    if (err.response) {
-      console.log('Status:', err.response.status);
-      console.log('Response:', err.response.data);
-    } else {
-      console.error(err);
-    }
+} catch (err) {
+  if (err && typeof err === 'object' && 'response' in err) {
+    const response = err.response;
+    console.log('Status:', response);
+    console.log('Response:', response);
+  } else {
+    console.error(err);
   }
+}
 }
 
 

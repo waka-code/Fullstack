@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction, Router } from 'express';
 import crypto from 'crypto';
+import dotenv from 'dotenv';
 
-const SECRET = 'Waddimi';
+dotenv.config();
+const SECRET = process.env.SECRET! || 'Waddimi';
 
 function verifyHmac(req: Request, res: Response, next: NextFunction) {
   const signature = req.header('x-signature');
