@@ -3,6 +3,7 @@ import useTaskItem from '../hooks/useTaskItem';
 import { IconCompleted } from '../asset/svg/IconCompleted';
 import { IconEdit } from '../asset/svg/IconEdit';
 import { IconDelete } from '../asset/svg/IconDelete';
+import { ConfirmPopover } from '../../_designSystem/ConfirmPopover';
 
 export interface TaskItemProps {
   task: Task;
@@ -19,7 +20,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
   onDelete,
   loading = false
 }) => {
-  const { handleToggle, handleDelete, handleEdit } = useTaskItem({
+  const { handleToggle, handleEdit, handleDelete, showConfirm, setShowConfirm } = useTaskItem({
     task,
     onToggle,
     onEdit,
@@ -72,10 +73,17 @@ const TaskItem: React.FC<TaskItemProps> = ({
           <IconEdit loading={loading} onclick={handleEdit} />
           <IconDelete
             loading={loading}
-            onclick={handleDelete}
+            onclick={() => setShowConfirm(true)}
           />
         </div>
       </div>
+
+      {showConfirm && <ConfirmPopover
+        open={showConfirm}
+        message="Are you sure you want to delete this task?"
+        onConfirm={handleDelete}
+        onCancel={() => setShowConfirm(false)}
+      />}
     </div>
   );
 };

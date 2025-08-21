@@ -27,6 +27,12 @@ class TaskViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(completed_tasks, many=True)
         return Response(serializer.data)
     
+    @action(detail=False, methods=['get'], url_path='all')
+    def get_all_tasks(self, request):
+        tasks = self.get_queryset()
+        serializer = self.get_serializer(tasks, many=True)
+        return Response(serializer.data)
+    
     @action(detail=False, methods=['get'])
     def pending(self, request):
         pending_tasks = self.get_queryset().filter(completed=False)
@@ -52,3 +58,5 @@ class TaskViewSet(viewsets.ModelViewSet):
             {'message': f'{deleted_count} completed tasks deleted'},
             status=status.HTTP_200_OK
         )
+        
+

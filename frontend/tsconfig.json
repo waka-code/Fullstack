@@ -16,6 +16,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "_designSystem/Button.tsx", "_designSystem/IconButton.tsx", "_designSystem/ErrorAlert.tsx", "_designSystem/Pagination.tsx", "_designSystem/LoadingSpinner.tsx"],
+  "include": ["src", "_designSystem/Button.tsx", "_designSystem/IconButton.tsx", "_designSystem/ErrorAlert.tsx", "_designSystem/Pagination.tsx", "_designSystem/LoadingSpinner.tsx", "_designSystem/ConfirmPopover.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -14,19 +14,27 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
+  const [allTasks, setAllTasks] = useState<Task[]>([]);
 
   const handleError = useCallback((error: any, defaultMessage: string) => {
-    const errorMessage = error.response?.data?.message || 
-                        error.response?.data?.detail || 
-                        error.message || 
-                        defaultMessage;
+    const errorMessage = error.response.data.name[0] ||
+      defaultMessage;
     setError(errorMessage);
-  },[])
+  }, [])
+
+  const fetchAllTasks = useCallback(async () => {
+    try {
+      const response = await taskService.getAllTasks();
+      setAllTasks(response);
+    } catch (error) {
+      handleError(error, 'Error loading tasks');
+    }
+  }, [handleError, taskService.getAllTasks]);
 
   const fetchTasks = useCallback(async (page: number = 1) => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const response = await taskService.getTasks(page);
       setTasks(response.results);
@@ -42,28 +50,26 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
   const createTask = useCallback(async (taskData: TaskFormData) => {
     setLoading(true);
     setError(null);
-    
+
     try {
       await taskService.createTask(taskData);
-      await fetchTasks(1); 
+      await fetchTasks(1);
     } catch (error) {
       handleError(error, 'Error creating task');
-      throw error; 
     } finally {
       setLoading(false);
     }
-  }, [handleError, fetchTasks,  taskService.createTask]);
+  }, [handleError, fetchTasks, taskService.createTask]);
 
   const updateTask = useCallback(async (id: string, taskData: Partial<TaskFormData>) => {
     setLoading(true);
     setError(null);
-    
+
     try {
       await taskService.updateTask(id, taskData);
       await fetchTasks(currentPage);
     } catch (error) {
       handleError(error, 'Error updating task');
-      throw error;
     } finally {
       setLoading(false);
     }
@@ -72,7 +78,7 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
   const deleteTask = useCallback(async (id: string) => {
     setLoading(true);
     setError(null);
-    
+
     try {
       await taskService.deleteTask(id);
       const remainingTasksOnPage = tasks.length - 1;
@@ -91,7 +97,7 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
     if (!task) return;
 
     setError(null);
-    
+
     try {
       await taskService.toggleTaskCompletion(id, !task.completed);
       await fetchTasks(currentPage);
@@ -112,6 +118,8 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
     updateTask,
     deleteTask,
     toggleTask,
+    fetchAllTasks,
+    allTasks
   };
 
   return (

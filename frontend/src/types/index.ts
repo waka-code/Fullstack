@@ -20,6 +20,7 @@ export interface ApiResponse<T> {
 
 export interface TaskContextType {
   tasks: Task[];
+  allTasks: Task[];
   loading: boolean;
   error: string | null;
   currentPage: number;
@@ -29,4 +30,5 @@ export interface TaskContextType {
   updateTask: (id: string, task: Partial<TaskFormData>) => Promise<void>;
   deleteTask: (id: string) => Promise<void>;
   toggleTask: (id: string) => Promise<void>;
+  fetchAllTasks: () => Promise<void>;
 }

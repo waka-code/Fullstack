@@ -23,6 +23,7 @@ const TaskList: React.FC = () => {
     handleToggleTask,
     handleDeleteTask,
     handlePageChange,
+    allTasks
   } = useTaskList()
 
   return (
@@ -123,7 +124,7 @@ const TaskList: React.FC = () => {
           <div className="mt-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
               <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900">{tasks.length}</div>
+                <div className="text-2xl font-bold text-gray-900">{allTasks.length}</div>
                 <div className="text-sm text-gray-500">Total</div>
               </div>
             </div>
@@ -131,7 +132,7 @@ const TaskList: React.FC = () => {
             <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
               <div className="text-center">
                 <div className="text-2xl font-bold text-yellow-600">
-                  {tasks.filter(t => !t.completed).length}
+                  {allTasks.filter(t => !t.completed).length}
                 </div>
                 <div className="text-sm text-gray-500">Pending</div>
               </div>
@@ -140,7 +141,7 @@ const TaskList: React.FC = () => {
             <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
               <div className="text-center">
                 <div className="text-2xl font-bold text-green-600">
-                  {tasks.filter(t => t.completed).length}
+                  {allTasks.filter(t => t.completed).length}
                 </div>
                 <div className="text-sm text-gray-500">Completed</div>
               </div>

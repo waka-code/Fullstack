@@ -14,7 +14,9 @@ function useTaskList() {
     createTask,
     updateTask,
     deleteTask,
-    toggleTask
+    toggleTask,
+    allTasks,
+    fetchAllTasks
   } = useTaskContext();
 
   const [editingTask, setEditingTask] = useState<Task | null>(null);
@@ -23,7 +25,8 @@ function useTaskList() {
 
   useEffect(() => {
     fetchTasks(1);
-  }, [fetchTasks]);
+    fetchAllTasks()
+  }, [fetchTasks, fetchAllTasks]);
 
   const handleCreateTask = useCallback(async (taskData: TaskFormData) => {
     try {
@@ -67,22 +70,25 @@ function useTaskList() {
   const handleToggleTask = useCallback(async (id: string) => {
     try {
       await toggleTask(id);
+      fetchAllTasks();
     } catch (error) {
       console.error('Error toggling task status:', error);
     }
-  }, [toggleTask]);
+  }, [toggleTask, fetchAllTasks]);
 
   const handleDeleteTask = useCallback(async (id: string) => {
     try {
       await deleteTask(id);
+      fetchAllTasks();
     } catch (error) {
       console.error('Error deleting task:', error);
     }
-  }, [deleteTask]);
+  }, [deleteTask, fetchAllTasks]);
 
   const handlePageChange = useCallback((page: number) => {
     fetchTasks(page);
-  }, [fetchTasks]);
+    fetchAllTasks();
+  }, [fetchTasks, fetchAllTasks]);
   return {
     tasks,
     loading,
@@ -97,7 +103,8 @@ function useTaskList() {
     handleCancelEdit,
     handleToggleTask,
     handleDeleteTask,
-    handlePageChange
+    handlePageChange,
+    allTasks
   }
 }
 

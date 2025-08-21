@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { TaskItemProps } from '../components/TaskItem';
 
 function useTaskItem({ task,
@@ -6,6 +6,8 @@ function useTaskItem({ task,
  onEdit,
  onDelete,
  loading = false }: TaskItemProps) {
+ const [showConfirm, setShowConfirm] = useState(false);
+
  const handleToggle = useCallback(async () => {
   if (!loading && task.id) {
    await onToggle(task.id);
@@ -13,10 +15,10 @@ function useTaskItem({ task,
  }, [loading, onToggle, task.id]);
 
  const handleDelete = useCallback(async () => {
-  if (!loading && task.id && window.confirm('¿Estás seguro de que quieres eliminar esta tarea?')) {
+  if (!loading && task.id) {
    await onDelete(task.id);
   }
- }, [loading, onDelete, task.id]); 
+ }, [loading, onDelete, task.id]);
 
  const handleEdit = useCallback(() => {
   if (!loading) {
@@ -25,8 +27,10 @@ function useTaskItem({ task,
  }, [loading, onEdit, task]);
  return {
   handleToggle,
+  handleEdit,
   handleDelete,
-  handleEdit
+  showConfirm,
+  setShowConfirm
  }
 }
 
