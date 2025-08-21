@@ -1,169 +1,139 @@
-# Full Stack Project
 
-A complete task management application built with React + Vite + TypeScript + Tailwind CSS on the frontend and Django + Django REST Framework on the backend.
+# Full Stack Task Manager
 
-## Technologies
+Aplicación completa de gestión de tareas con React + Vite + TypeScript + Tailwind CSS en el frontend, Django + Django REST Framework en el backend y challenges en Node.js para retos técnicos.
+
+## Tecnologías principales
 
 ### Frontend
-- React 18 with hooks
-- Vite for fast development
-- TypeScript for static typing
-- Tailwind CSS for modern styling
+- React 18, Vite, TypeScript, Tailwind CSS
+- Testing: Vitest, Testing Library
 
 ### Backend
-- Django 4 with REST Framework
-- SQLite lightweight database
-- Complete REST API with CRUD
-- Validations and pagination
+- Django 4, Django REST Framework, SQLite
+- Validaciones, paginación, CORS, filtros y búsquedas
 
-## Project Description
+### Backend Node.js
+- Express, TypeScript, Jest, Axios
 
-This application allows efficient task management through a modern web interface. Users can create, edit, delete and mark tasks as completed. The application includes:
+## Estructura del proyecto
 
-**Main features:**
-- Create new tasks with input validation
-- Mark tasks as completed or pending
-- Edit existing task names
-- Delete individual tasks
-- Filter tasks by status (completed/pending)
-- View general task statistics
-- Search tasks by name
-- Automatic pagination for large lists
+- `frontend/`: SPA React + Vite
+- `backend/`: API REST Django
+- `challenges-node/`: scripts y app en Node.js
 
-**Technical architecture:**
-- Frontend developed as Single Page Application (SPA) with React
-- Backend implemented as RESTful API with Django
-- SQLite database for data persistence
-- Frontend-backend communication via HTTP/JSON
-- Static typing on frontend with TypeScript
-- Responsive styling with Tailwind CSS
-- Validations on both frontend and backend
+## Instalación y ejecución
 
-**Technical features:**
-- State management with React Context API
-- Reusable and modular components
-- Error handling and loading states
-- CORS configured for development
-- Data serialization with Django REST Framework
-- Automatic database migrations
+### Requisitos
+- Node.js >= 16
+- Python >= 3.8
+- pip
+- Docker (opcional)
 
-## Run with Docker
-
-### Main commands:
+### Opción 1: Docker (recomendado)
 
 ```bash
-# Build and start entire application
 npm run docker:setup
-
-# Only build images
-npm run docker:build
-
-# Start services (after building)
-npm run docker:up
-
-# View real-time logs
-npm run docker:logs
-
-# Stop services
-npm run docker:down
-
-# Restart services
-npm run docker:restart
 ```
 
-### Application access:
+Acceso:
 - Frontend: http://localhost:5173
 - Backend API: http://localhost:8000
 - Django Admin: http://localhost:8000/admin
 
-## Run without Docker
+### Opción 2: Local sin Docker
 
 ```bash
-# Set up everything (one time only)
 npm run setup
-
-# Start backend and frontend separately
 npm run start:backend
 npm run start:frontend
 ```
 
-## Manual Docker commands
+### Scripts principales
 
 ```bash
-# Build images
+# Instalar dependencias y preparar todo
+npm run setup
+
+# Backend: instalar dependencias y migrar
+npm run setup:backend
+# Frontend: instalar dependencias
+npm run setup:frontend
+# Microservicio Node: instalar y compilar
+npm run setup:micro
+
+# Iniciar backend
+npm run start:backend
+# Iniciar frontend
+npm run start:frontend
+# Iniciar microservicio Node en modo dev
+cd micro-challenges-node && npm run dev
+
+# Pruebas microservicio Node
+cd micro-challenges-node && npm test
+```
+
+### Comandos Docker manuales
+
+```bash
 docker-compose build
-
-# Start in detached mode (background)
 docker-compose up -d
-
-# Start in interactive mode (view logs)
-docker-compose up
-
-# View logs
 docker-compose logs -f
-
-# Stop services
 docker-compose down
-
-# Also remove volumes
 docker-compose down -v
 ```
 
-## Installation and Setup
-
-### Prerequisites
-- Node.js (version 16 or higher)
-- Python (version 3.8 or higher)
-- pip (Python package manager)
-
-
-### Individual Commands
-
-Frontend (port 5173):
-```bash
-npm run start:frontend
-```
-
-Backend (port 8000):
-```bash
-npm run start:backend
-```
-
-## Development URLs
-
-- Frontend: http://localhost:5173
-- Backend API: http://127.0.0.1:8000
-- Django Admin: http://127.0.0.1:8000/admin
-
-## Features
+## Pruebas
 
 ### Frontend
-- Task list with complete CRUD
-- Automatic pagination (+10 tasks)
-- TypeScript typed components
-- Responsive design with Tailwind CSS
-- Performance optimized
 
-### Backend
-- Task model with validations
-- REST API with serializers
-- Automatic pagination
-- Data validation
-- CORS configured for development
-- SQLite for data persistence
+```bash
+cd frontend
+npm test
+# o
+npm run test:ui
+# Cobertura
+npm run test:coverage
+```
 
-## Development
+### Microservicio Node
 
-1. Clone the repository
-2. Run `npm run docker:setup` from root (recommended)
-3. Or run `npm run setup` for local installation
-4. Frontend will be at http://localhost:5173
-5. Backend will be at http://127.0.0.1:8000
+```bash
+cd micro-challenges-node
+npm test
+```
 
-## API Endpoints
+## Endpoints principales API
 
-- `GET /api/tasks/` - List tasks
-- `POST /api/tasks/` - Create task
-- `GET /api/tasks/{id}/` - Get task
-- `PUT /api/tasks/{id}/` - Update task
+- `GET /api/tasks/` - Listar tareas (paginado)
+- `POST /api/tasks/` - Crear tarea
+- `GET /api/tasks/{id}/` - Obtener tarea
+- `PUT /api/tasks/{id}/` - Actualizar tarea
+- `DELETE /api/tasks/{id}/` - Eliminar tarea
+- `GET /api/tasks/completed/` - Listar solo completadas
+- `GET /api/tasks/pending/` - Listar solo pendientes
+- `GET /api/tasks/stats/` - Estadísticas generales
+- `DELETE /api/tasks/clear_completed/` - Eliminar todas completadas
+
+## Notas técnicas
+
+- El backend usa SQLite por defecto, pero puede configurarse para otros motores.
+- El frontend usa Context API para estado global y paginación automática.
+- El backend en Node es independiente y se puede usar para retos técnicos o pruebas.
+- El sistema de tests cubre componentes, hooks y servicios principales.
+- Tailwind CSS está configurado vía Vite.
+- CORS está habilitado para desarrollo.
+
+## Estructura de carpetas relevante
+
+- `frontend/src/components/` - Componentes principales
+- `frontend/src/context/` - Contexto global de tareas
+- `frontend/src/services/` - Servicios de API
+- `frontend/src/test/` - Pruebas unitarias e integración
+- `backend/tasks/` - Lógica de modelo, vistas y serializadores
+- `challenges-node/src/` - Código fuente
+
+## Para producción
+
+Revisar variables de entorno y configuración de seguridad antes de desplegar en producción.
 - `DELETE /api/tasks/{id}/` - Delete task

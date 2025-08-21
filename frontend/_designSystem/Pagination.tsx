@@ -34,6 +34,7 @@ const Pagination: React.FC<PaginationProps> = ({
         disabled={currentPage === 1 || loading}
         variant="ghost"
         size="sm"
+        aria-label="Previous page"
       >
         Previous
       </Button>
@@ -46,6 +47,8 @@ const Pagination: React.FC<PaginationProps> = ({
             disabled={loading}
             variant={pageNum === currentPage ? "primary" : "ghost"}
             size="sm"
+            aria-label={pageNum === currentPage ? `Current page, page ${pageNum}` : `Go to page ${pageNum}`}
+            aria-current={pageNum === currentPage ? "page" : undefined}
           >
             {pageNum}
           </Button>
@@ -57,6 +60,7 @@ const Pagination: React.FC<PaginationProps> = ({
         disabled={currentPage === totalPages || loading}
         variant="ghost"
         size="sm"
+        aria-label="Next page"
       >
         Next
       </Button>

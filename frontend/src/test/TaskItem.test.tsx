@@ -1,56 +1,166 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, cleanup } from '@testing-library/react'
-import { Task } from '../types'
-import TaskItem from '../components/TaskItem'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import TaskItem, { TaskItemProps } from '../components/TaskItem';
+import { useTaskItem } from '../hooks/useTaskItem';
+
+vi.mock('../hooks/useTaskItem', () => ({
+  useTaskItem: vi.fn(() => ({
+    handleToggle: vi.fn(),
+    handleEdit: vi.fn(),
+    handleDelete: vi.fn(),
+    showConfirm: false,
+    setShowConfirm: vi.fn(),
+  })),
+}));
+
+vi.mock('../asset/svg/IconCompleted', () => ({
+  IconCompleted: ({ loading, onclick, isCompleted }: any) => (
+    <button data-testid="completed-icon" disabled={loading} onClick={onclick}>
+      {isCompleted ? 'Completed' : 'Not Completed'}
+    </button>
+  ),
+}));
+
+vi.mock('../asset/svg/IconEdit', () => ({
+  IconEdit: ({ loading, onclick }: any) => (
+    <button data-testid="edit-icon" disabled={loading} onClick={onclick}>
+      Edit
+    </button>
+  ),
+}));
+
+vi.mock('../asset/svg/IconDelete', () => ({
+  IconDelete: ({ loading, onclick }: any) => (
+    <button data-testid="delete-icon" disabled={loading} onClick={onclick}>
+      Delete
+    </button>
+  ),
+}));
+
+// Mock the ConfirmPopover component
+vi.mock('../../_designSystem/ConfirmPopover', () => ({
+  ConfirmPopover: ({ open, message, onConfirm, onCancel }: any) =>
+    open ? (
+      <div data-testid="confirm-popover">
+        <p>{message}</p>
+        <button data-testid="confirm-button" onClick={onConfirm}>
+          Confirm
+        </button>
+        <button data-testid="cancel-button" onClick={onCancel}>
+          Cancel
+        </button>
+      </div>
+    ) : null,
+}));
 
 describe('TaskItem', () => {
-  const mockTask: Task = {
-    id: '1',
-    name: 'Test Task',
-    completed: false,
-    created_at: '2024-01-01T00:00:00Z',
-    updated_at: '2024-01-01T00:00:00Z'
-  }
-
-  const mockHandlers = {
+  const defaultProps: TaskItemProps = {
+    task: {
+      id: '1',
+      name: 'Test Task',
+      completed: false,
+      created_at: '2025-08-20T12:00:00Z',
+    },
     onToggle: vi.fn(),
     onEdit: vi.fn(),
-    onDelete: vi.fn()
-  }
+    onDelete: vi.fn(),
+    loading: false,
+  };
 
   beforeEach(() => {
-    vi.clearAllMocks()
-  })
+    vi.clearAllMocks();
+  });
 
-  afterEach(() => {
-    cleanup()
-  })
+  it('renders task item with correct details', () => {
+    render(<TaskItem {...defaultProps} />);
+    
+    expect(screen.getByText('Test Task')).toBeInTheDocument();
+    expect(screen.getByText('Pending')).toHaveClass('bg-yellow-100');
+    expect(screen.getByText(/Created: 8\/20\/2025/)).toBeInTheDocument();
+    expect(screen.getByTestId('completed-icon')).toHaveTextContent('Not Completed');
+  });
 
-  it('debería renderizarse correctamente', () => {
-    render(
-      <TaskItem 
-        task={mockTask}
-        {...mockHandlers}
-        loading={false}
-      />
-    )
+  it('disables interactions when loading', () => {
+    render(<TaskItem {...defaultProps} loading={true} />);
     
-    expect(screen.getByText('Test Task')).toBeDefined()
-  })
+    expect(screen.getByTestId('completed-icon')).toBeDisabled();
+    expect(screen.getByTestId('edit-icon')).toBeDisabled();
+    expect(screen.getByTestId('delete-icon')).toBeDisabled();
+  });
 
-  it('debería mostrar tarea completada', () => {
-    const completedTask = { ...mockTask, completed: true }
+  it('calls handleToggle when completed icon is clicked', () => {
+    const mockHandleToggle = vi.fn();
+    vi.mocked(useTaskItem).mockReturnValue({
+      handleToggle: mockHandleToggle,
+      handleEdit: vi.fn(),
+      handleDelete: vi.fn(),
+      showConfirm: false,
+      setShowConfirm: vi.fn(),
+    });
+
+    render(<TaskItem {...defaultProps} />);
     
-    const { container } = render(
-      <TaskItem 
-        task={completedTask}
-        {...mockHandlers}
-        loading={false}
-      />
-    )
+    fireEvent.click(screen.getByTestId('completed-icon'));
     
-    const taskTextElement = container.querySelector('p.line-through')
-    expect(taskTextElement).not.toBeNull()
-    expect(taskTextElement?.textContent).toBe('Test Task')
-  })
-})
+    expect(mockHandleToggle).toHaveBeenCalled();
+  });
+
+  it('calls handleEdit when edit icon is clicked', () => {
+    const mockHandleEdit = vi.fn();
+    vi.mocked(useTaskItem).mockReturnValue({
+      handleToggle: vi.fn(),
+      handleEdit: mockHandleEdit,
+      handleDelete: vi.fn(),
+      showConfirm: false,
+      setShowConfirm: vi.fn(),
+    });
+
+    render(<TaskItem {...defaultProps} />);
+    
+    fireEvent.click(screen.getByTestId('edit-icon'));
+    
+    expect(mockHandleEdit).toHaveBeenCalled();
+  });
+
+  it('shows confirm popover when delete icon is clicked', () => {
+    const mockSetShowConfirm = vi.fn();
+    vi.mocked(useTaskItem).mockReturnValue({
+      handleToggle: vi.fn(),
+      handleEdit: vi.fn(),
+      handleDelete: vi.fn(),
+      showConfirm: false,
+      setShowConfirm: mockSetShowConfirm,
+    });
+
+    render(<TaskItem {...defaultProps} />);
+    
+    fireEvent.click(screen.getByTestId('delete-icon'));
+    
+    expect(mockSetShowConfirm).toHaveBeenCalledWith(true);
+  });
+
+  it('renders confirm popover and handles confirm/cancel', async () => {
+    const mockHandleDelete = vi.fn();
+    const mockSetShowConfirm = vi.fn();
+    vi.mocked(useTaskItem).mockReturnValue({
+      handleToggle: vi.fn(),
+      handleEdit: vi.fn(),
+      handleDelete: mockHandleDelete,
+      showConfirm: true,
+      setShowConfirm: mockSetShowConfirm,
+    });
+
+    render(<TaskItem {...defaultProps} />);
+    
+    expect(screen.getByTestId('confirm-popover')).toBeInTheDocument();
+    expect(screen.getByText('Are you sure you want to delete this task?')).toBeInTheDocument();
+    
+    fireEvent.click(screen.getByTestId('confirm-button'));
+    await waitFor(() => {
+      expect(mockHandleDelete).toHaveBeenCalled();
+    });
+
+    fireEvent.click(screen.getByTestId('cancel-button'));
+    expect(mockSetShowConfirm).toHaveBeenCalledWith(false);
+  });
+});

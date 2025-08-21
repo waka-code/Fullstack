@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 import { TaskItemProps } from '../components/TaskItem';
 
-function useTaskItem({ task,
+export function useTaskItem({ task,
  onToggle,
  onEdit,
  onDelete,
@@ -33,5 +33,3 @@ function useTaskItem({ task,
   setShowConfirm
  }
 }
-
-export default useTaskItem

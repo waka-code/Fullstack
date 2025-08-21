@@ -3,7 +3,7 @@ import { Task, TaskFormData } from '../types';
 import { useTaskContext } from './useTaskContext';
 import { useNavigate } from 'react-router-dom';
 
-function useTaskList() {
+export function useTaskList() {
   const {
     tasks,
     loading,
@@ -107,5 +107,3 @@ function useTaskList() {
     allTasks
   }
 }
-
-export default useTaskList

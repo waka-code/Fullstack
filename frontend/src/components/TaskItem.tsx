@@ -1,5 +1,5 @@
 import { Task } from '../types';
-import useTaskItem from '../hooks/useTaskItem';
+import { useTaskItem } from '../hooks/useTaskItem';
 import { IconCompleted } from '../asset/svg/IconCompleted';
 import { IconEdit } from '../asset/svg/IconEdit';
 import { IconDelete } from '../asset/svg/IconDelete';

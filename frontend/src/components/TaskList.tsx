@@ -1,5 +1,5 @@
 import React from 'react';
-import useTaskList from '../hooks/useTaskList';
+import {useTaskList} from '../hooks/useTaskList';
 import ErrorAlert from '../../_designSystem/ErrorAlert';
 
 const TaskItem = React.lazy(() => import('./TaskItem'));
