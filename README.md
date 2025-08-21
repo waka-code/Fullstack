@@ -109,12 +109,12 @@ docker-compose down
 docker-compose down -v
 ```
 
-## Instalación y Configuración
+## Installation and Setup
 
-### Prerrequisitos
-- Node.js (versión 16 o superior)
-- Python (versión 3.8 o superior)
-- pip (gestor de paquetes de Python)
+### Prerequisites
+- Node.js (version 16 or higher)
+- Python (version 3.8 or higher)
+- pip (Python package manager)
 
 
 ### Individual Commands
