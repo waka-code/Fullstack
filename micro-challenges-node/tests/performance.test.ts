@@ -1,5 +1,6 @@
 import request from 'supertest';
 import app from '../src/app';
+import { describe, expect, it } from '@jest/globals';
 
 describe('Performance Route', () => {
   const url = '/performance/heavy';
@@ -9,7 +10,7 @@ describe('Performance Route', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.n).toBe(35);
-    expect(res.body.result).toBe(9227465); // fib(35)
+    expect(res.body.result).toBe(9227465); 
   });
 
   it('devuelve el fibonacci para n=10', async () => {
@@ -17,7 +18,7 @@ describe('Performance Route', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.n).toBe(10);
-    expect(res.body.result).toBe(55); // fib(10)
+    expect(res.body.result).toBe(55); 
   });
 
   it('devuelve el fibonacci para n=1', async () => {
@@ -25,6 +26,6 @@ describe('Performance Route', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.n).toBe(1);
-    expect(res.body.result).toBe(1); // fib(1)
+    expect(res.body.result).toBe(1); 
   });
 });

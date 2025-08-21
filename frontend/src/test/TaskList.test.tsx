@@ -1,11 +1,10 @@
-import { render, screen, within } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import TaskList from '../components/TaskList';
 import { Task } from '../types';
 import { Suspense } from 'react';
 import { useTaskList } from '../hooks/useTaskList';
 
-// Mock the useTaskList hook
 vi.mock('../hooks/useTaskList', () => ({
   useTaskList: vi.fn(() => ({
     tasks: [],
@@ -26,7 +25,6 @@ vi.mock('../hooks/useTaskList', () => ({
   })),
 }));
 
-// Mock lazy-loaded components
 vi.mock('./TaskForm', () => ({
   default: ({ submitButtonText, onCancel }: any) => (
     <div data-testid="task-form">

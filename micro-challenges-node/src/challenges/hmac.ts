@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, Router } from 'express';
 import crypto from 'crypto';
 
-const SECRET = 'supersecretkey';
+const SECRET = 'Waddimi';
 
 function verifyHmac(req: Request, res: Response, next: NextFunction) {
   const signature = req.header('x-signature');

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import crypto from 'crypto';
 
-const SECRET = 'supersecretkey';
+const SECRET = 'Waddimi';
 const body = { foo: 'bar' };
 const bodyString = JSON.stringify(body);
 const signature = crypto.createHmac('sha256', SECRET).update(bodyString).digest('hex');

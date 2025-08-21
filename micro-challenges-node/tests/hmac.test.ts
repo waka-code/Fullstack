@@ -1,8 +1,9 @@
 import request from 'supertest';
 import crypto from 'crypto';
 import app from '../src/app';
+import { describe, expect, it } from '@jest/globals';
 
-const SECRET = 'supersecretkey';
+const SECRET = 'Waddimi';
 
 function signBody(body: object) {
   return crypto.createHmac('sha256', SECRET).update(JSON.stringify(body)).digest('hex');

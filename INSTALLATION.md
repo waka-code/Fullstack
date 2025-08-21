@@ -6,6 +6,12 @@
 - Python (version 3.8+)
 - Docker
 
+## Dependency Initialization in Backend, Frontend, and Micro-Challenges
+
+```bash
+npm run setup
+```
+
 ## Opcion 1: Docker
 
 ```bash

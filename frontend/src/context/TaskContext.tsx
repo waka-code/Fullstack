@@ -19,15 +19,7 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
   const handleError = useCallback((error: any, defaultMessage: string) => {
     let errorMessage = defaultMessage;
     if (error?.message) {
-      errorMessage = error.message;
-    } else if (error?.response?.data) {
-      if (error.response.data.name && Array.isArray(error.response.data.name)) {
-        errorMessage = error.response.data.name[0];
-      } else if (typeof error.response.data.detail === 'string') {
-        errorMessage = error.response.data.detail;
-      } else if (typeof error.response.data.message === 'string') {
-        errorMessage = error.response.data.message;
-      }
+      errorMessage = error.response.data.name[0];
     }
     setError(errorMessage);
   }, []);
@@ -49,7 +41,7 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
       const response = await taskService.getTasks(page);
       setTasks(response.results);
       setCurrentPage(page);
-      setTotalPages(Math.ceil(response.count / 5)); 
+      setTotalPages(Math.ceil(response.count / 5));
     } catch (error) {
       handleError(error, 'Error loading tasks');
     } finally {
@@ -79,8 +71,8 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
 
     try {
       const updatedTask = await taskService.updateTask(id, taskData);
-      setTasks(prevTasks => 
-        prevTasks.map(task => 
+      setTasks(prevTasks =>
+        prevTasks.map(task =>
           task.id === id ? updatedTask : task
         )
       );
@@ -118,8 +110,8 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
 
     try {
       const updatedTask = await taskService.toggleTaskCompletion(id, !task.completed);
-      setTasks(prevTasks => 
-        prevTasks.map(task => 
+      setTasks(prevTasks =>
+        prevTasks.map(task =>
           task.id === id ? updatedTask : task
         )
       );
