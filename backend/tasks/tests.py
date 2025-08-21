@@ -59,7 +59,7 @@ class TaskAPITest(APITestCase):
     def test_create_task_via_api(self):
         url = reverse('task-list')
         data = {
-            'name': 'Nueva Tarea API',
+            'name': 'New API Task',
             'completed': False
         }
         response = self.client.post(url, data, format='json')
@@ -76,7 +76,7 @@ class TaskAPITest(APITestCase):
     def test_update_task(self):
         url = reverse('task-detail', kwargs={'pk': self.task.id})
         data = {
-            'name': 'Tarea Actualizada',
+            'name': 'Updated Task',
             'completed': True
         }
         response = self.client.put(url, data, format='json')
@@ -112,7 +112,7 @@ class TaskAPITest(APITestCase):
         self.assertTrue(self.task.completed)
     
     def test_get_completed_tasks(self):
-        Task.objects.create(name='Tarea Completada', completed=True)
+        Task.objects.create(name='Completed Task', completed=True)
         
         url = reverse('task-completed')
         response = self.client.get(url)
@@ -130,9 +130,9 @@ class TaskAPITest(APITestCase):
             self.assertFalse(task['completed'])
     
     def test_get_task_stats(self):
-        Task.objects.create(name='Tarea Completada 1', completed=True)
-        Task.objects.create(name='Tarea Completada 2', completed=True)
-        Task.objects.create(name='Tarea Pendiente', completed=False)
+        Task.objects.create(name='Completed Task 1', completed=True)
+        Task.objects.create(name='Completed Task 2', completed=True)
+        Task.objects.create(name='Pending Task', completed=False)
         
         url = '/api/tasks/stats/'
         response = self.client.get(url)
@@ -150,15 +150,15 @@ class TaskAPITest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
     
     def test_search_tasks(self):
-        Task.objects.create(name='Tarea Específica', completed=False)
+        Task.objects.create(name='Specific Task', completed=False)
         
         url = reverse('task-list')
-        response = self.client.get(url, {'search': 'Específica'})
+        response = self.client.get(url, {'search': 'Specific'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertGreater(len(response.data['results']), 0)
     
     def test_filter_tasks_by_completion(self):
-        Task.objects.create(name='Tarea Completada Filter', completed=True)
+        Task.objects.create(name='Completed Task Filter', completed=True)
         
         url = reverse('task-list')
         response = self.client.get(url, {'completed': 'true'})

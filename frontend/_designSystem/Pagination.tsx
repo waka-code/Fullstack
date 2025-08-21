@@ -35,7 +35,7 @@ const Pagination: React.FC<PaginationProps> = ({
         variant="ghost"
         size="sm"
       >
-        Anterior
+        Previous
       </Button>
 
       <div className="flex space-x-1">
@@ -58,11 +58,11 @@ const Pagination: React.FC<PaginationProps> = ({
         variant="ghost"
         size="sm"
       >
-        Siguiente
+        Next
       </Button>
 
       <span className="text-sm text-gray-500 ml-4">
-        Página {currentPage} de {totalPages}
+        Page {currentPage} of {totalPages}
       </span>
     </div>
   );

@@ -14,7 +14,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
   onSubmit,
   loading = false,
   initialValues = { name: '', completed: false },
-  submitButtonText = 'Crear Tarea',
+  submitButtonText = 'Create Task',
   onCancel
 }) => {
 
@@ -26,13 +26,13 @@ const TaskForm: React.FC<TaskFormProps> = ({
   return (
     <form onSubmit={handleSubmit} className="card mb-2">
       <h2 className="text-xl font-semibold text-gray-800 mb-4">
-        {initialValues.name ? 'Editar Tarea' : 'Nueva Tarea'}
+        {initialValues.name ? 'Edit Task' : 'New Task'}
       </h2>
 
       <div className="space-y-4">
         <div className="w-full border-amber-300">
           <label htmlFor="taskName" className="block text-sm font-medium text-gray-700 mb-2">
-            Nombre de la tarea *
+            Task Name *
           </label>
           <div className="w-full">
             <input
@@ -42,7 +42,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
               value={formData.name}
               onChange={handleInputChange}
               className={`w-full px-4 py-2 text-lg border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent ${errors.name ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'}`}
-              placeholder="Ingresa el nombre de la tarea..."
+              placeholder="Enter task name..."
               disabled={loading}
               maxLength={255}
               required
@@ -67,7 +67,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
             disabled={loading}
           />
           <label htmlFor="taskCompleted" className="ml-2 block text-sm text-gray-700">
-            Marcar como completada
+            Mark as completed
           </label>
         </div>
 
@@ -89,7 +89,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
               onClick={onCancel}
               disabled={loading}
             >
-              Cancelar
+              Cancel
             </Button>
           )}
         </div>

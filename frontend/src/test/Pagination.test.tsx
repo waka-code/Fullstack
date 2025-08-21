@@ -21,15 +21,15 @@ describe('Pagination', () => {
     cleanup()
   })
 
-  it('debería renderizarse correctamente con páginas múltiples', () => {
+  it('should render correctly with multiple pages', () => {
     render(<Pagination {...defaultProps} />)
     
-    expect(screen.getByText('Anterior')).toBeDefined()
-    expect(screen.getByText('Siguiente')).toBeDefined()
-    expect(screen.getByText('Página 1 de 5')).toBeDefined()
+    expect(screen.getByText('Previous')).toBeDefined()
+    expect(screen.getByText('Next')).toBeDefined()
+    expect(screen.getByText('Page 1 of 5')).toBeDefined()
   })
 
-  it('no debería renderizarse si hay solo una página', () => {
+  it('should not render if there is only one page', () => {
     const { container } = render(
       <Pagination {...defaultProps} totalPages={1} />
     )
@@ -37,7 +37,7 @@ describe('Pagination', () => {
     expect(container.firstChild).toBeNull()
   })
 
-  it('no debería renderizarse si hay cero páginas', () => {
+  it('should not render if there are zero pages', () => {
     const { container } = render(
       <Pagination {...defaultProps} totalPages={0} />
     )
@@ -45,41 +45,41 @@ describe('Pagination', () => {
     expect(container.firstChild).toBeNull()
   })
 
-  it('debería deshabilitar el botón anterior en la primera página', () => {
+  it('should disable previous button on first page', () => {
     render(<Pagination {...defaultProps} currentPage={1} />)
     
-    const previousButton = screen.getByText('Anterior')
+    const previousButton = screen.getByText('Previous')
     expect(previousButton.getAttribute('disabled')).toBe('')
     expect(previousButton.className).toContain('cursor-not-allowed')
   })
 
-  it('debería deshabilitar el botón siguiente en la última página', () => {
+  it('should disable next button on last page', () => {
     render(<Pagination {...defaultProps} currentPage={5} totalPages={5} />)
     
-    const nextButton = screen.getByText('Siguiente')
+    const nextButton = screen.getByText('Next')
     expect(nextButton.getAttribute('disabled')).toBe('')
     expect(nextButton.className).toContain('cursor-not-allowed')
   })
 
-  it('debería llamar onPageChange al hacer clic en página anterior', () => {
+  it('should call onPageChange when clicking previous page', () => {
     render(<Pagination {...defaultProps} currentPage={3} />)
     
-    const previousButton = screen.getByText('Anterior')
+    const previousButton = screen.getByText('Previous')
     fireEvent.click(previousButton)
     
     expect(mockOnPageChange).toHaveBeenCalledWith(2)
   })
 
-  it('debería llamar onPageChange al hacer clic en página siguiente', () => {
+  it('should call onPageChange when clicking next page', () => {
     render(<Pagination {...defaultProps} currentPage={3} />)
     
-    const nextButton = screen.getByText('Siguiente')
+    const nextButton = screen.getByText('Next')
     fireEvent.click(nextButton)
     
     expect(mockOnPageChange).toHaveBeenCalledWith(4)
   })
 
-  it('debería llamar onPageChange al hacer clic en un número de página', () => {
+  it('should call onPageChange when clicking a page number', () => {
     render(<Pagination {...defaultProps} currentPage={1} />)
     
     const pageButton = screen.getByText('3')
@@ -88,11 +88,11 @@ describe('Pagination', () => {
     expect(mockOnPageChange).toHaveBeenCalledWith(3)
   })
 
-  it('no debería permitir navegación cuando está cargando', () => {
+  it('should not allow navigation when loading', () => {
     render(<Pagination {...defaultProps} loading={true} currentPage={2} />)
     
-    const previousButton = screen.getByText('Anterior')
-    const nextButton = screen.getByText('Siguiente')
+    const previousButton = screen.getByText('Previous')
+    const nextButton = screen.getByText('Next')
     const pageButton = screen.getByText('3')
     
     fireEvent.click(previousButton)
@@ -102,7 +102,7 @@ describe('Pagination', () => {
     expect(mockOnPageChange).not.toHaveBeenCalled()
   })
 
-  it('debería mostrar la página actual con estilo destacado', () => {
+  it('should show current page with highlighted style', () => {
     render(<Pagination {...defaultProps} currentPage={3} />)
     
     const currentPageButton = screen.getByText('3')
@@ -111,7 +111,7 @@ describe('Pagination', () => {
     expect(currentPageButton.getAttribute('aria-current')).toBe('page')
   })
 
-  it('debería generar los números de página correctos para páginas centrales', () => {
+  it('should generate correct page numbers for middle pages', () => {
     render(<Pagination {...defaultProps} currentPage={5} totalPages={10} />)
     
     expect(screen.getByText('3')).toBeDefined()
@@ -121,7 +121,7 @@ describe('Pagination', () => {
     expect(screen.getByText('7')).toBeDefined()
   })
 
-  it('debería generar los números de página correctos al inicio', () => {
+  it('should generate correct page numbers at the beginning', () => {
     render(<Pagination {...defaultProps} currentPage={1} totalPages={10} />)
     
     expect(screen.getByText('1')).toBeDefined()
@@ -131,7 +131,7 @@ describe('Pagination', () => {
     expect(screen.getByText('5')).toBeDefined()
   })
 
-  it('debería generar los números de página correctos al final', () => {
+  it('should generate correct page numbers at the end', () => {
     render(<Pagination {...defaultProps} currentPage={10} totalPages={10} />)
     
     expect(screen.getByText('6')).toBeDefined()
@@ -141,22 +141,22 @@ describe('Pagination', () => {
     expect(screen.getByText('10')).toBeDefined()
   })
 
-  it('debería tener atributos de accesibilidad correctos', () => {
+  it('should have correct accessibility attributes', () => {
     render(<Pagination {...defaultProps} />)
     
-    const previousButton = screen.getByText('Anterior')
-    expect(previousButton.getAttribute('aria-label')).toBe('Página anterior')
+    const previousButton = screen.getByText('Previous')
+    expect(previousButton.getAttribute('aria-label')).toBe('Previous page')
     
-    const nextButton = screen.getByText('Siguiente')
-    expect(nextButton.getAttribute('aria-label')).toBe('Página siguiente')
+    const nextButton = screen.getByText('Next')
+    expect(nextButton.getAttribute('aria-label')).toBe('Next page')
     
     const pageButton = screen.getByText('2')
-    expect(pageButton.getAttribute('aria-label')).toBe('Ir a página 2')
+    expect(pageButton.getAttribute('aria-label')).toBe('Go to page 2')
   })
 
-  it('debería mostrar información de página correcta', () => {
+  it('should show correct page information', () => {
     render(<Pagination {...defaultProps} currentPage={3} totalPages={7} />)
     
-    expect(screen.getByText('Página 3 de 7')).toBeDefined()
+    expect(screen.getByText('Page 3 of 7')).toBeDefined()
   })
 })

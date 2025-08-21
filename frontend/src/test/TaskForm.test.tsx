@@ -14,50 +14,50 @@ describe('TaskForm', () => {
     cleanup()
   })
 
-  it('debería renderizarse correctamente', () => {
+  it('should render correctly', () => {
     render(
       <TaskForm 
         onSubmit={mockOnSubmit}
         loading={false}
         initialValues={{ name: '', completed: false }}
-        submitButtonText="Crear Tarea"
+        submitButtonText="Create Task"
       />
     )
     
-    expect(screen.getByPlaceholderText(/nombre de la tarea/i)).toBeDefined()
-    expect(screen.getByText('Crear Tarea')).toBeDefined()
+    expect(screen.getByPlaceholderText(/task name/i)).toBeDefined()
+    expect(screen.getByText('Create Task')).toBeDefined()
   })
 
-  it('debería permitir escribir en el input', () => {
+  it('should allow typing in the input', () => {
     const { container } = render(
       <TaskForm 
         onSubmit={mockOnSubmit}
         loading={false}
         initialValues={{ name: '', completed: false }}
-        submitButtonText="Crear Tarea"
+        submitButtonText="Create Task"
       />
     )
     
     const input = container.querySelector('input[name="name"]') as HTMLInputElement
     expect(input).not.toBeNull()
     
-    fireEvent.change(input, { target: { value: 'Nueva tarea de test' } })
+    fireEvent.change(input, { target: { value: 'New test task' } })
     
-    expect(input.value).toBe('Nueva tarea de test')
+    expect(input.value).toBe('New test task')
   })
 
-  it('debería mostrar botón de cancelar cuando está editando', () => {
+  it('should show cancel button when editing', () => {
     render(
       <TaskForm 
         onSubmit={mockOnSubmit}
         onCancel={mockOnCancel}
         loading={false}
-        initialValues={{ name: 'Tarea existente', completed: false }}
-        submitButtonText="Actualizar Tarea"
+        initialValues={{ name: 'Existing task', completed: false }}
+        submitButtonText="Update Task"
       />
     )
     
-    expect(screen.getByText('Cancelar')).toBeDefined()
-    expect(screen.getByText('Actualizar Tarea')).toBeDefined()
+    expect(screen.getByText('Cancel')).toBeDefined()
+    expect(screen.getByText('Update Task')).toBeDefined()
   })
 })

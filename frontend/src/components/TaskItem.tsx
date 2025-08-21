@@ -56,12 +56,12 @@ const TaskItem: React.FC<TaskItemProps> = ({
                   : 'bg-yellow-100 text-yellow-800'
                 }
               `}>
-                {task.completed ? 'Completada' : 'Pendiente'}
+                {task.completed ? 'Completed' : 'Pending'}
               </span>
 
               {task.created_at && (
                 <span className="text-xs text-gray-500">
-                  Creada: {new Date(task.created_at).toLocaleDateString('es-ES')}
+                  Created: {new Date(task.created_at).toLocaleDateString('en-US')}
                 </span>
               )}
             </div>

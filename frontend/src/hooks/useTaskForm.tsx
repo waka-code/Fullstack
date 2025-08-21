@@ -1,23 +1,33 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { TaskFormProps } from '../components/TaskForm';
 import { TaskFormData } from '../types';
+import { useLocation } from 'react-router-dom';
 
 export function useTaskForm({
   onSubmit,
   initialValues = { name: '', completed: false },
 }: TaskFormProps) {
+  const location = useLocation();
+  const taskFromState = location.state?.task;
+
   const [formData, setFormData] = useState<TaskFormData>(initialValues);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  useEffect(() => {
+    if (taskFromState) {
+      setFormData({ name: taskFromState.name, completed: taskFromState.completed });
+    }
+  }, [taskFromState]);
 
   const validateForm = useCallback((): boolean => {
     const newErrors: { [key: string]: string } = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = 'El nombre de la tarea es requerido';
+      newErrors.name = 'Task name is required';
     } else if (formData.name.trim().length < 3) {
-      newErrors.name = 'El nombre debe tener al menos 3 caracteres';
+      newErrors.name = 'Name must be at least 3 characters long';
     } else if (formData.name.trim().length > 255) {
-      newErrors.name = 'El nombre no puede exceder 255 caracteres';
+      newErrors.name = 'Name cannot exceed 255 characters';
     }
 
     setErrors(newErrors);
@@ -42,8 +52,9 @@ export function useTaskForm({
       }
 
       setErrors({});
+      setFormData({ name: '', completed: false });
     } catch (error) {
-      console.error('Error al enviar formulario:', error);
+      console.error('Error submitting form:', error);
     }
   }, [formData, initialValues.name, onSubmit, validateForm]);
 
@@ -57,9 +68,8 @@ export function useTaskForm({
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
+  }, [errors]);
 
-    setFormData(initialValues);
-  }, [errors, initialValues]);
   return {
     formData,
     errors,

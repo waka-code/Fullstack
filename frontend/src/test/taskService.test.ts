@@ -19,7 +19,7 @@ describe('TaskService', () => {
     vi.restoreAllMocks()
   })
 
-  it('debería tener métodos básicos disponibles', async () => {
+  it('should have basic methods available', async () => {
     const { taskService } = await import('../services/taskService')
     
     expect(typeof taskService.getTasks).toBe('function')
@@ -29,7 +29,7 @@ describe('TaskService', () => {
     expect(typeof taskService.toggleTaskCompletion).toBe('function')
   })
 
-  it('debería poder mockear getTasks correctamente', async () => {
+  it('should be able to mock getTasks correctly', async () => {
     const { taskService } = await import('../services/taskService')
     const mockResponse = {
       results: [{ id: '1', name: 'Test', completed: false, created_at: '', updated_at: '' }],
@@ -45,10 +45,10 @@ describe('TaskService', () => {
     expect(taskService.getTasks).toHaveBeenCalledWith(1)
   })
 
-  it('debería poder mockear createTask correctamente', async () => {
+  it('should be able to mock createTask correctly', async () => {
     const { taskService } = await import('../services/taskService')
-    const mockTask = { id: '1', name: 'Nueva tarea', completed: false, created_at: '', updated_at: '' }
-    const taskData = { name: 'Nueva tarea', completed: false }
+    const mockTask = { id: '1', name: 'New task', completed: false, created_at: '', updated_at: '' }
+    const taskData = { name: 'New task', completed: false }
 
     vi.mocked(taskService.createTask).mockResolvedValue(mockTask)
 
@@ -57,10 +57,10 @@ describe('TaskService', () => {
     expect(taskService.createTask).toHaveBeenCalledWith(taskData)
   })
 
-  it('debería poder mockear updateTask correctamente', async () => {
+  it('should be able to mock updateTask correctly', async () => {
     const { taskService } = await import('../services/taskService')
-    const mockTask = { id: '1', name: 'Tarea actualizada', completed: false, created_at: '', updated_at: '' }
-    const updateData = { name: 'Tarea actualizada' }
+    const mockTask = { id: '1', name: 'Updated task', completed: false, created_at: '', updated_at: '' }
+    const updateData = { name: 'Updated task' }
 
     vi.mocked(taskService.updateTask).mockResolvedValue(mockTask)
 
@@ -69,7 +69,7 @@ describe('TaskService', () => {
     expect(taskService.updateTask).toHaveBeenCalledWith('1', updateData)
   })
 
-  it('debería poder mockear deleteTask correctamente', async () => {
+  it('should be able to mock deleteTask correctly', async () => {
     const { taskService } = await import('../services/taskService')
     
     vi.mocked(taskService.deleteTask).mockResolvedValue()
@@ -78,9 +78,9 @@ describe('TaskService', () => {
     expect(taskService.deleteTask).toHaveBeenCalledWith('1')
   })
 
-  it('debería poder mockear toggleTaskCompletion correctamente', async () => {
+  it('should be able to mock toggleTaskCompletion correctly', async () => {
     const { taskService } = await import('../services/taskService')
-    const mockTask = { id: '1', name: 'Tarea', completed: true, created_at: '', updated_at: '' }
+    const mockTask = { id: '1', name: 'Task', completed: true, created_at: '', updated_at: '' }
 
     vi.mocked(taskService.toggleTaskCompletion).mockResolvedValue(mockTask)
 

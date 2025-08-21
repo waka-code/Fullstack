@@ -16,7 +16,7 @@ function useTaskItem({ task,
   if (!loading && task.id && window.confirm('¿Estás seguro de que quieres eliminar esta tarea?')) {
    await onDelete(task.id);
   }
- }, [loading, onDelete, task.id]);
+ }, [loading, onDelete, task.id]); 
 
  const handleEdit = useCallback(() => {
   if (!loading) {

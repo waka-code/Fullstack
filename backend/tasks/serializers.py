@@ -10,9 +10,9 @@ class TaskSerializer(serializers.ModelSerializer):
     
     def validate_name(self, value):
         if not value or len(value.strip()) == 0:
-            raise serializers.ValidationError("El nombre de la tarea no puede estar vacío.")
+            raise serializers.ValidationError("Task name cannot be empty.")
         if len(value) > 255:
-            raise serializers.ValidationError("El nombre de la tarea no puede exceder 255 caracteres.")
+            raise serializers.ValidationError("Task name cannot exceed 255 characters.")
         return value.strip()
 
 

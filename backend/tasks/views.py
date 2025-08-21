@@ -37,6 +37,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(pending_tasks, many=True)
         return Response(serializer.data)
     
+    
     @method_decorator(cache_page(60 * 5)) 
     @action(detail=False, methods=['get'])
     def stats(self, request):

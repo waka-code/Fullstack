@@ -4,10 +4,6 @@ from .models import Task
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    """
-    Configuración del admin para el modelo Task.
-    """
-    
     list_display = [
         'name',
         'completed',
@@ -32,10 +28,10 @@ class TaskAdmin(admin.ModelAdmin):
     ]
     
     fieldsets = (
-        ('Información de la Tarea', {
+        ('Task Information', {
             'fields': ('id', 'name', 'completed')
         }),
-        ('Fechas', {
+        ('Dates', {
             'fields': ('created_at', 'updated_at'),
         }),
     )
@@ -45,19 +41,17 @@ class TaskAdmin(admin.ModelAdmin):
     actions = ['mark_as_completed', 'mark_as_pending']
     
     def mark_as_completed(self, request, queryset):
-        """Acción para marcar tareas como completadas."""
         updated = queryset.update(completed=True)
         self.message_user(
             request, 
-            f'{updated} tarea(s) marcada(s) como completada(s).'
+            f'{updated} task(s) marked as completed.'
         )
-    mark_as_completed.short_description = "Marcar como completadas"
+    mark_as_completed.short_description = "Mark as completed"
     
     def mark_as_pending(self, request, queryset):
-        """Acción para marcar tareas como pendientes."""
         updated = queryset.update(completed=False)
         self.message_user(
             request, 
-            f'{updated} tarea(s) marcada(s) como pendiente(s).'
+            f'{updated} task(s) marked as pending.'
         )
-    mark_as_pending.short_description = "Marcar como pendientes"
+    mark_as_pending.short_description = "Mark as pending"

@@ -33,7 +33,7 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
       setCurrentPage(page);
       setTotalPages(Math.ceil(response.count / 5));
     } catch (error) {
-      handleError(error, 'Error al cargar las tareas');
+      handleError(error, 'Error loading tasks');
     } finally {
       setLoading(false);
     }
@@ -47,7 +47,7 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
       await taskService.createTask(taskData);
       await fetchTasks(1); 
     } catch (error) {
-      handleError(error, 'Error al crear la tarea');
+      handleError(error, 'Error creating task');
       throw error; 
     } finally {
       setLoading(false);
@@ -62,7 +62,7 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
       await taskService.updateTask(id, taskData);
       await fetchTasks(currentPage);
     } catch (error) {
-      handleError(error, 'Error al actualizar la tarea');
+      handleError(error, 'Error updating task');
       throw error;
     } finally {
       setLoading(false);
@@ -79,7 +79,7 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
       const targetPage = remainingTasksOnPage === 0 && currentPage > 1 ? currentPage - 1 : currentPage;
       await fetchTasks(targetPage);
     } catch (error) {
-      handleError(error, 'Error al eliminar la tarea');
+      handleError(error, 'Error deleting task');
       throw error;
     } finally {
       setLoading(false);
@@ -96,7 +96,7 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
       await taskService.toggleTaskCompletion(id, !task.completed);
       await fetchTasks(currentPage);
     } catch (error) {
-      handleError(error, 'Error al cambiar el estado de la tarea');
+      handleError(error, 'Error toggling task status');
       throw error;
     }
   }, [tasks, handleError, fetchTasks, currentPage, taskService.toggleTaskCompletion]);
