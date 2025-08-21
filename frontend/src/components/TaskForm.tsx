@@ -1,5 +1,6 @@
 import { TaskFormData } from '../types';
 import { useTaskForm } from '../hooks/useTaskForm';
+import Button from '../../_designSystem/Button';
 
 export interface TaskFormProps {
   onSubmit: (task: TaskFormData) => Promise<void>;
@@ -23,29 +24,31 @@ const TaskForm: React.FC<TaskFormProps> = ({
   });
 
   return (
-    <form onSubmit={handleSubmit} className="card mb-6">
+    <form onSubmit={handleSubmit} className="card mb-2">
       <h2 className="text-xl font-semibold text-gray-800 mb-4">
         {initialValues.name ? 'Editar Tarea' : 'Nueva Tarea'}
       </h2>
 
       <div className="space-y-4">
-        {/* Campo de nombre */}
-        <div>
+        <div className="w-full border-amber-300">
           <label htmlFor="taskName" className="block text-sm font-medium text-gray-700 mb-2">
             Nombre de la tarea *
           </label>
-          <input
-            type="text"
-            id="taskName"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            className={`input-field ${errors.name ? 'border-red-500 focus:ring-red-500' : ''}`}
-            placeholder="Ingresa el nombre de la tarea..."
-            disabled={loading}
-            maxLength={255}
-            required
-          />
+          <div className="w-full">
+            <input
+              type="text"
+              id="taskName"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              className={`w-full px-4 py-2 text-lg border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent ${errors.name ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'}`}
+              placeholder="Ingresa el nombre de la tarea..."
+              disabled={loading}
+              maxLength={255}
+              required
+            />
+          </div>
+
           {errors.name && (
             <p className="mt-1 text-sm text-red-600" role="alert">
               {errors.name}
@@ -53,7 +56,6 @@ const TaskForm: React.FC<TaskFormProps> = ({
           )}
         </div>
 
-        {/* Campo de estado completado */}
         <div className="flex items-center">
           <input
             type="checkbox"
@@ -69,25 +71,26 @@ const TaskForm: React.FC<TaskFormProps> = ({
           </label>
         </div>
 
-        {/* Botones de acción */}
         <div className="flex gap-3 pt-4">
-          <button
+          <Button
             type="submit"
+            variant="primary"
             disabled={loading || !formData.name.trim()}
-            className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+            loading={loading}
+            fullWidth
           >
-            {loading ? 'Guardando...' : submitButtonText}
-          </button>
+            {submitButtonText}
+          </Button>
 
           {onCancel && (
-            <button
+            <Button
               type="button"
+              variant="ghost"
               onClick={onCancel}
               disabled={loading}
-              className="btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Cancelar
-            </button>
+            </Button>
           )}
         </div>
       </div>

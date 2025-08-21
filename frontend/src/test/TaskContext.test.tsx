@@ -1,6 +1,3 @@
-/**
- * @vitest-environment jsdom
- */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook, act, cleanup } from '@testing-library/react'
 import { TaskProvider } from '../context/TaskContext'
@@ -9,7 +6,6 @@ import { Task, TaskFormData } from '../types'
 import { ReactNode } from 'react'
 import { useTaskContext } from '../hooks/useTaskContext'
 
-// Mock del servicio
 vi.mock('../services/taskService', () => ({
   taskService: {
     getTasks: vi.fn(),
@@ -45,7 +41,6 @@ describe('TaskContext', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     
-    // Mock console.error para evitar ruido en tests
     vi.spyOn(console, 'error').mockImplementation(() => {})
   })
 
@@ -65,7 +60,6 @@ describe('TaskContext', () => {
   })
 
   it('debería lanzar error cuando se usa fuera del provider', () => {
-    // Suprimir error de consola para este test específico
     const originalError = console.error
     console.error = vi.fn()
     
@@ -93,7 +87,7 @@ describe('TaskContext', () => {
     expect(taskService.getTasks).toHaveBeenCalledWith(1)
     expect(result.current.tasks).toEqual(mockTasks)
     expect(result.current.currentPage).toBe(1)
-    expect(result.current.totalPages).toBe(3) // 25 / 10 = 2.5, redondeado a 3
+    expect(result.current.totalPages).toBe(3)
     expect(result.current.loading).toBe(false)
     expect(result.current.error).toBeNull()
   })
@@ -126,7 +120,6 @@ describe('TaskContext', () => {
     
     const { result } = renderHook(() => useTaskContext(), { wrapper })
     
-    // Cargar tareas iniciales
     vi.mocked(taskService.getTasks).mockResolvedValue({
       results: mockTasks,
       count: 2,
@@ -138,7 +131,6 @@ describe('TaskContext', () => {
       await result.current.fetchTasks(1)
     })
     
-    // Crear nueva tarea
     const taskData: TaskFormData = { name: 'Nueva tarea', completed: false }
     
     await act(async () => {
@@ -146,7 +138,7 @@ describe('TaskContext', () => {
     })
     
     expect(taskService.createTask).toHaveBeenCalledWith(taskData)
-    expect(result.current.tasks[0]).toEqual(newTask) // Se añade al principio
+    expect(result.current.tasks[0]).toEqual(newTask) 
     expect(result.current.loading).toBe(false)
     expect(result.current.error).toBeNull()
   })
@@ -180,7 +172,6 @@ describe('TaskContext', () => {
     
     const { result } = renderHook(() => useTaskContext(), { wrapper })
     
-    // Cargar tareas iniciales
     vi.mocked(taskService.getTasks).mockResolvedValue({
       results: mockTasks,
       count: 2,
@@ -192,7 +183,6 @@ describe('TaskContext', () => {
       await result.current.fetchTasks(1)
     })
     
-    // Actualizar tarea
     const updateData = { name: 'Tarea actualizada' }
     
     await act(async () => {
@@ -210,7 +200,6 @@ describe('TaskContext', () => {
     
     const { result } = renderHook(() => useTaskContext(), { wrapper })
     
-    // Cargar tareas iniciales
     vi.mocked(taskService.getTasks).mockResolvedValue({
       results: mockTasks,
       count: 2,
@@ -222,7 +211,6 @@ describe('TaskContext', () => {
       await result.current.fetchTasks(1)
     })
     
-    // Eliminar tarea
     await act(async () => {
       await result.current.deleteTask('1')
     })
@@ -239,7 +227,6 @@ describe('TaskContext', () => {
     
     const { result } = renderHook(() => useTaskContext(), { wrapper })
     
-    // Cargar tareas iniciales
     vi.mocked(taskService.getTasks).mockResolvedValue({
       results: mockTasks,
       count: 2,
@@ -251,7 +238,6 @@ describe('TaskContext', () => {
       await result.current.fetchTasks(1)
     })
     
-    // Alternar tarea
     await act(async () => {
       await result.current.toggleTask('1')
     })
@@ -312,15 +298,12 @@ describe('TaskContext', () => {
     
     const { result } = renderHook(() => useTaskContext(), { wrapper })
     
-    // Iniciar carga
     act(() => {
       result.current.fetchTasks(1)
     })
     
-    // Verificar estado de loading
     expect(result.current.loading).toBe(true)
     
-    // Resolver promesa
     await act(async () => {
       resolvePromise({
         results: mockTasks,
@@ -331,19 +314,16 @@ describe('TaskContext', () => {
       await promise
     })
     
-    // Verificar que loading se desactivó
     expect(result.current.loading).toBe(false)
   })
 
   it('no debería alternar tarea si no existe', async () => {
     const { result } = renderHook(() => useTaskContext(), { wrapper })
     
-    // Intentar alternar tarea inexistente
     await act(async () => {
       await result.current.toggleTask('inexistente')
     })
     
-    // No debería llamar al servicio
     expect(taskService.toggleTaskCompletion).not.toHaveBeenCalled()
   })
 })

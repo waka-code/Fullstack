@@ -31,45 +31,43 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
       const response = await taskService.getTasks(page);
       setTasks(response.results);
       setCurrentPage(page);
-      setTotalPages(Math.ceil(response.count / 10));
+      setTotalPages(Math.ceil(response.count / 5));
     } catch (error) {
       handleError(error, 'Error al cargar las tareas');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [handleError, taskService.getTasks]);
 
   const createTask = useCallback(async (taskData: TaskFormData) => {
     setLoading(true);
     setError(null);
     
     try {
-      const newTask = await taskService.createTask(taskData);
-      setTasks(prevTasks => [newTask, ...prevTasks]);
+      await taskService.createTask(taskData);
+      await fetchTasks(1); 
     } catch (error) {
       handleError(error, 'Error al crear la tarea');
       throw error; 
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [handleError, fetchTasks,  taskService.createTask]);
 
   const updateTask = useCallback(async (id: string, taskData: Partial<TaskFormData>) => {
     setLoading(true);
     setError(null);
     
     try {
-      const updatedTask = await taskService.updateTask(id, taskData);
-      setTasks(prevTasks => 
-        prevTasks.map(task => task.id === id ? updatedTask : task)
-      );
+      await taskService.updateTask(id, taskData);
+      await fetchTasks(currentPage);
     } catch (error) {
       handleError(error, 'Error al actualizar la tarea');
       throw error;
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [handleError, fetchTasks, currentPage, taskService.updateTask]);
 
   const deleteTask = useCallback(async (id: string) => {
     setLoading(true);
@@ -77,14 +75,16 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
     
     try {
       await taskService.deleteTask(id);
-      setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
+      const remainingTasksOnPage = tasks.length - 1;
+      const targetPage = remainingTasksOnPage === 0 && currentPage > 1 ? currentPage - 1 : currentPage;
+      await fetchTasks(targetPage);
     } catch (error) {
       handleError(error, 'Error al eliminar la tarea');
       throw error;
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [handleError, fetchTasks, currentPage, tasks.length, taskService.deleteTask]);
 
   const toggleTask = useCallback(async (id: string) => {
     const task = tasks.find(t => t.id === id);
@@ -93,15 +93,13 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
     setError(null);
     
     try {
-      const updatedTask = await taskService.toggleTaskCompletion(id, !task.completed);
-      setTasks(prevTasks => 
-        prevTasks.map(t => t.id === id ? updatedTask : t)
-      );
+      await taskService.toggleTaskCompletion(id, !task.completed);
+      await fetchTasks(currentPage);
     } catch (error) {
       handleError(error, 'Error al cambiar el estado de la tarea');
       throw error;
     }
-  }, [tasks]);
+  }, [tasks, handleError, fetchTasks, currentPage, taskService.toggleTaskCompletion]);
 
   const contextValue: TaskContextType = {
     tasks,

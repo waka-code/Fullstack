@@ -1,6 +1,3 @@
-/**
- * @vitest-environment jsdom
- */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, cleanup, waitFor } from '@testing-library/react'
 import TaskList from '../components/TaskList'
@@ -8,7 +5,6 @@ import { TaskProvider } from '../context/TaskContext'
 import { taskService } from '../services/taskService'
 import { Task } from '../types'
 
-// Mock de los servicios
 vi.mock('../services/taskService', () => ({
   taskService: {
     getTasks: vi.fn(),
@@ -19,7 +15,6 @@ vi.mock('../services/taskService', () => ({
   }
 }))
 
-// Mock de los componentes lazy para evitar problemas con Suspense en tests
 vi.mock('../components/TaskItem', () => ({
   default: ({ task, onToggle, onEdit, onDelete }: any) => (
     <div data-testid={`task-${task.id}`}>
@@ -143,7 +138,6 @@ describe('TaskList', () => {
   })
 
   it('debería mostrar spinner de carga mientras cargan las tareas', async () => {
-    // Mock que tarda en resolver
     vi.mocked(taskService.getTasks).mockImplementation(() => new Promise(resolve => 
       setTimeout(() => resolve({
         results: mockTasks,
@@ -181,13 +175,10 @@ describe('TaskList', () => {
       expect(screen.getByText('Pendientes')).toBeDefined()
       expect(screen.getByText('Completadas')).toBeDefined()
       
-      // Verificar valores específicos usando selectores más precisos
       const totalElements = screen.getAllByText('2')
       const pendingElements = screen.getAllByText('1')
       
-      // Debe haber al menos un elemento con "2" (total)
       expect(totalElements.length).toBeGreaterThan(0)
-      // Debe haber al menos dos elementos con "1" (pendientes y completadas)
       expect(pendingElements.length).toBeGreaterThanOrEqual(2)
     })
   })
@@ -243,7 +234,6 @@ describe('TaskList', () => {
       fireEvent.click(editButton)
     })
     
-    // Verificar que se cambió a modo edición
     await waitFor(() => {
       const cancelButton = screen.getByText('Cancel')
       expect(cancelButton).toBeDefined()
@@ -268,7 +258,7 @@ describe('TaskList', () => {
   it('debería mostrar paginación cuando hay múltiples páginas', async () => {
     vi.mocked(taskService.getTasks).mockResolvedValue({
       results: mockTasks,
-      count: 25, // Más de 10 para mostrar paginación
+      count: 25,
       next: 'next-url',
       previous: null
     })
@@ -306,7 +296,6 @@ describe('TaskList', () => {
     
     renderTaskList()
     
-    // Mock console.error para evitar ruido en tests
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
     
     await waitFor(() => {

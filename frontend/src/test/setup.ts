@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom'
 import { afterAll, beforeAll } from 'vitest'
 
-// Mock de console para evitar warnings en tests
 const originalError = console.error
 beforeAll(() => {
   console.error = (...args: any) => {

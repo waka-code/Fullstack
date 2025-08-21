@@ -1,9 +1,5 @@
-/**
- * @vitest-environment jsdom
- */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
-// Mock básico del servicio
 vi.mock('../services/taskService', () => ({
   taskService: {
     getTasks: vi.fn(),

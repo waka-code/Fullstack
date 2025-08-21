@@ -1,6 +1,3 @@
-/**
- * @vitest-environment jsdom
- */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, cleanup } from '@testing-library/react'
 import TaskForm from '../components/TaskForm'
@@ -41,7 +38,6 @@ describe('TaskForm', () => {
       />
     )
     
-    // Usar querySelector para evitar duplicados
     const input = container.querySelector('input[name="name"]') as HTMLInputElement
     expect(input).not.toBeNull()
     

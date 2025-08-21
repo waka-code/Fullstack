@@ -1,6 +1,3 @@
-/**
- * @vitest-environment jsdom
- */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, cleanup } from '@testing-library/react'
 import { Task } from '../types'
@@ -52,7 +49,6 @@ describe('TaskItem', () => {
       />
     )
     
-    // Verificar que tenga la clase line-through para tareas completadas
     const taskTextElement = container.querySelector('p.line-through')
     expect(taskTextElement).not.toBeNull()
     expect(taskTextElement?.textContent).toBe('Test Task')

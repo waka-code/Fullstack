@@ -2,12 +2,10 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from . import views
 
-# Crear el router y registrar el viewset
 router = DefaultRouter()
 router.register(r'tasks', views.TaskViewSet, basename='task')
 
 urlpatterns = [
-    # URLs del router (incluye todas las rutas del ViewSet)
     path('', include(router.urls)),
 ]
 

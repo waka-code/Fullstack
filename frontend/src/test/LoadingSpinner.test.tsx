@@ -1,9 +1,6 @@
-/**
- * @vitest-environment jsdom
- */
 import { describe, it, expect, afterEach } from 'vitest'
 import { render, screen, cleanup } from '@testing-library/react'
-import LoadingSpinner from '../components/LoadingSpinner'
+import LoadingSpinner from '../../_designSystem/LoadingSpinner'
 
 describe('LoadingSpinner', () => {
   afterEach(() => {
@@ -69,7 +66,6 @@ describe('LoadingSpinner', () => {
     const spinner = screen.getByRole('status')
     expect(spinner.getAttribute('aria-label')).toBe('Cargando...')
     
-    // Verificar que el texto está oculto visualmente pero accesible para lectores de pantalla
     const hiddenText = screen.getByText('Cargando...')
     expect(hiddenText.className).toContain('sr-only')
   })

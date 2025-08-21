@@ -1,6 +1,3 @@
-/**
- * @vitest-environment jsdom
- */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react'
 import { TaskProvider } from '../context/TaskContext'
@@ -8,7 +5,6 @@ import { taskService } from '../services/taskService'
 import TaskList from '../components/TaskList'
 import { Task } from '../types'
 
-// Mock del servicio
 vi.mock('../services/taskService', () => ({
   taskService: {
     getTasks: vi.fn(),
@@ -19,7 +15,6 @@ vi.mock('../services/taskService', () => ({
   }
 }))
 
-// Mock de componentes lazy para evitar problemas con Suspense
 vi.mock('../components/TaskItem', () => ({
   default: ({ task, onToggle, onEdit, onDelete }: any) => (
     <div data-testid={`task-item-${task.id}`}>
@@ -135,7 +130,6 @@ describe('Integración TaskList + TaskContext + TaskService', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     
-    // Mock exitoso por defecto
     vi.mocked(taskService.getTasks).mockResolvedValue({
       results: mockTasks,
       count: mockTasks.length,
@@ -143,7 +137,6 @@ describe('Integración TaskList + TaskContext + TaskService', () => {
       previous: null
     })
     
-    // Mock console.error para evitar ruido
     vi.spyOn(console, 'error').mockImplementation(() => {})
   })
 
@@ -163,21 +156,17 @@ describe('Integración TaskList + TaskContext + TaskService', () => {
   it('debería renderizar la aplicación completa correctamente', async () => {
     renderApp()
     
-    // Verificar elementos principales
     expect(screen.getByText('Gestor de Tareas')).toBeDefined()
     
-    // Esperar a que el Suspense resuelva y aparezca el formulario
     await waitFor(() => {
       expect(screen.getByTestId('task-form')).toBeDefined()
     }, { timeout: 3000 })
     
-    // Esperar a que carguen las tareas
     await waitFor(() => {
       expect(screen.getByTestId('task-item-1')).toBeDefined()
       expect(screen.getByTestId('task-item-2')).toBeDefined()
     }, { timeout: 3000 })
     
-    // Verificar que se muestran las tareas
     expect(screen.getByTestId('task-name-1')).toHaveTextContent('Tarea de prueba 1')
     expect(screen.getByTestId('task-name-2')).toHaveTextContent('Tarea de prueba 2')
     
@@ -199,20 +188,16 @@ describe('Integración TaskList + TaskContext + TaskService', () => {
     
     renderApp()
     
-    // Esperar que cargue la interfaz
     await waitFor(() => {
       expect(screen.getByTestId('task-form')).toBeDefined()
     })
     
-    // Llenar el formulario
     const nameInput = screen.getByTestId('task-name-input')
     fireEvent.change(nameInput, { target: { value: 'Nueva tarea de integración' } })
     
-    // Enviar formulario
     const submitButton = screen.getByTestId('submit-button')
     fireEvent.click(submitButton)
     
-    // Verificar que se llamó al servicio
     await waitFor(() => {
       expect(taskService.createTask).toHaveBeenCalledWith({
         name: 'Nueva tarea de integración',
@@ -227,16 +212,13 @@ describe('Integración TaskList + TaskContext + TaskService', () => {
     
     renderApp()
     
-    // Esperar que carguen las tareas
     await waitFor(() => {
       expect(screen.getByTestId('toggle-1')).toBeDefined()
     })
     
-    // Hacer clic en toggle
     const toggleButton = screen.getByTestId('toggle-1')
     fireEvent.click(toggleButton)
     
-    // Verificar llamada al servicio
     await waitFor(() => {
       expect(taskService.toggleTaskCompletion).toHaveBeenCalledWith('1', true)
     })
@@ -248,30 +230,24 @@ describe('Integración TaskList + TaskContext + TaskService', () => {
     
     renderApp()
     
-    // Esperar que carguen las tareas
     await waitFor(() => {
       expect(screen.getByTestId('edit-1')).toBeDefined()
     })
     
-    // Hacer clic en editar
     const editButton = screen.getByTestId('edit-1')
     fireEvent.click(editButton)
     
-    // Verificar que apareció el botón cancelar (modo edición)
     await waitFor(() => {
       expect(screen.getByTestId('cancel-button')).toBeDefined()
     })
     
-    // El formulario debería tener el valor inicial
     const nameInput = screen.getByTestId('task-name-input')
     expect(nameInput).toHaveValue('Tarea de prueba 1')
     
-    // Cambiar el nombre y enviar
     fireEvent.change(nameInput, { target: { value: 'Tarea editada' } })
     const submitButton = screen.getByTestId('submit-button')
     fireEvent.click(submitButton)
     
-    // Verificar llamada al servicio
     await waitFor(() => {
       expect(taskService.updateTask).toHaveBeenCalledWith('1', {
         name: 'Tarea editada',
@@ -285,16 +261,13 @@ describe('Integración TaskList + TaskContext + TaskService', () => {
     
     renderApp()
     
-    // Esperar que carguen las tareas
     await waitFor(() => {
       expect(screen.getByTestId('delete-1')).toBeDefined()
     })
     
-    // Hacer clic en eliminar
     const deleteButton = screen.getByTestId('delete-1')
     fireEvent.click(deleteButton)
     
-    // Verificar llamada al servicio
     await waitFor(() => {
       expect(taskService.deleteTask).toHaveBeenCalledWith('1')
     })
@@ -303,12 +276,10 @@ describe('Integración TaskList + TaskContext + TaskService', () => {
   it('debería mostrar estadísticas correctas', async () => {
     renderApp()
     
-    // Esperar que carguen las tareas
     await waitFor(() => {
-      expect(screen.getByText('2')).toBeDefined() // Total
+      expect(screen.getByText('2')).toBeDefined() 
     })
     
-    // Verificar estadísticas
     expect(screen.getByText('(1 pendientes, 1 completadas)')).toBeDefined()
     expect(screen.getByText('Total')).toBeDefined()
     expect(screen.getByText('Pendientes')).toBeDefined()
@@ -316,27 +287,23 @@ describe('Integración TaskList + TaskContext + TaskService', () => {
   })
 
   it('debería manejar paginación correctamente', async () => {
-    // Mock con múltiples páginas
     vi.mocked(taskService.getTasks).mockResolvedValue({
       results: mockTasks,
-      count: 25, // Más de 10 para activar paginación
+      count: 25, 
       next: 'next-url',
       previous: null
     })
     
     renderApp()
     
-    // Esperar paginación
     await waitFor(() => {
       expect(screen.getByTestId('pagination')).toBeDefined()
       expect(screen.getByTestId('page-info')).toHaveTextContent('Página 1 de 3')
     })
     
-    // Hacer clic en siguiente página
     const nextButton = screen.getByTestId('next-page')
     fireEvent.click(nextButton)
     
-    // Verificar llamada al servicio
     await waitFor(() => {
       expect(taskService.getTasks).toHaveBeenCalledWith(2)
     })
@@ -348,7 +315,6 @@ describe('Integración TaskList + TaskContext + TaskService', () => {
     
     renderApp()
     
-    // Verificar que se muestra el error
     await waitFor(() => {
       expect(screen.getByText(errorMessage)).toBeDefined()
     })
@@ -364,7 +330,6 @@ describe('Integración TaskList + TaskContext + TaskService', () => {
     
     renderApp()
     
-    // Verificar mensaje de estado vacío
     await waitFor(() => {
       expect(screen.getByText('No hay tareas')).toBeDefined()
       expect(screen.getByText('Comienza creando tu primera tarea usando el formulario de arriba.')).toBeDefined()
@@ -374,25 +339,20 @@ describe('Integración TaskList + TaskContext + TaskService', () => {
   it('debería cancelar edición de tarea', async () => {
     renderApp()
     
-    // Esperar que carguen las tareas
     await waitFor(() => {
       expect(screen.getByTestId('edit-1')).toBeDefined()
     })
     
-    // Entrar en modo edición
     const editButton = screen.getByTestId('edit-1')
     fireEvent.click(editButton)
     
-    // Verificar modo edición
     await waitFor(() => {
       expect(screen.getByTestId('cancel-button')).toBeDefined()
     })
     
-    // Cancelar edición
     const cancelButton = screen.getByTestId('cancel-button')
     fireEvent.click(cancelButton)
     
-    // Verificar que se salió del modo edición
     await waitFor(() => {
       expect(screen.queryByTestId('cancel-button')).toBeNull()
     })
@@ -412,24 +372,20 @@ describe('Integración TaskList + TaskContext + TaskService', () => {
     
     renderApp()
     
-    // Esperar que cargue la interfaz
     await waitFor(() => {
       expect(screen.getByTestId('task-form')).toBeDefined()
       expect(screen.getByTestId('delete-1')).toBeDefined()
     })
     
-    // Crear tarea y eliminar otra simultáneamente
     const nameInput = screen.getByTestId('task-name-input')
     fireEvent.change(nameInput, { target: { value: 'Tarea simultánea' } })
     
     const submitButton = screen.getByTestId('submit-button')
     const deleteButton = screen.getByTestId('delete-1')
     
-    // Ejecutar ambas acciones
     fireEvent.click(submitButton)
     fireEvent.click(deleteButton)
     
-    // Verificar que ambas se ejecutaron
     await waitFor(() => {
       expect(taskService.createTask).toHaveBeenCalledWith({
         name: 'Tarea simultánea',

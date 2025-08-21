@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import { TaskItemProps } from '../components/TaskItem';
 
 function useTaskItem({ task,

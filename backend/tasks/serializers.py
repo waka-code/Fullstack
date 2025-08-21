@@ -17,9 +17,6 @@ class TaskSerializer(serializers.ModelSerializer):
 
 
 class TaskStatsSerializer(serializers.Serializer):
-    """
-    Serializer for task statistics
-    """
     total = serializers.IntegerField()
     completed = serializers.IntegerField()
     pending = serializers.IntegerField()

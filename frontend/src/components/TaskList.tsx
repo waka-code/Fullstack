@@ -1,10 +1,11 @@
 import React from 'react';
 import useTaskList from '../hooks/useTaskList';
+import ErrorAlert from '../../_designSystem/ErrorAlert';
 
 const TaskItem = React.lazy(() => import('./TaskItem'));
 const TaskForm = React.lazy(() => import('./TaskForm'));
-const LoadingSpinner = React.lazy(() => import('./LoadingSpinner'));
-const Pagination = React.lazy(() => import('./Pagination'));
+const LoadingSpinner = React.lazy(() => import('../../_designSystem/LoadingSpinner'));
+const Pagination = React.lazy(() => import('../../_designSystem/Pagination'));
 
 const TaskList: React.FC = () => {
   const {
@@ -25,10 +26,9 @@ const TaskList: React.FC = () => {
   } = useTaskList()
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-2">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Gestor de Tareas
           </h1>
@@ -37,8 +37,7 @@ const TaskList: React.FC = () => {
           </p>
         </div>
 
-        {/* Formulario de tarea */}
-        <React.Suspense fallback={<div className="animate-pulse h-20 bg-gray-200 rounded-lg mb-6"></div>}>
+        <React.Suspense fallback={<div className="animate-pulse h-20 bg-gray-200 rounded-lg mb-2"></div>}>
           <TaskForm
             onSubmit={isCreating ? handleCreateTask : handleUpdateTask}
             loading={loading}
@@ -52,25 +51,14 @@ const TaskList: React.FC = () => {
           />
         </React.Suspense>
 
-        {/* Mensaje de error */}
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <p className="text-sm text-red-700">{error}</p>
-              </div>
-            </div>
-          </div>
+          <React.Suspense fallback={<LoadingSpinner />}>
+            <ErrorAlert message={error} />
+          </React.Suspense>
         )}
 
-        {/* Lista de tareas */}
         <div className="bg-white rounded-lg shadow-sm">
-          <div className="px-6 py-4 border-b border-gray-200">
+          <div className="px-6 py-1 border-b border-gray-200">
             <h2 className="text-lg font-medium text-gray-900">
               Mis Tareas
               {tasks.length > 0 && (
@@ -117,9 +105,8 @@ const TaskList: React.FC = () => {
             )}
           </div>
 
-          {/* Paginación */}
           {totalPages > 1 && (
-            <div className="px-6 py-4 border-t border-gray-200">
+            <div className="px-2 py-2 border-t border-gray-200">
               <React.Suspense fallback={<div className="animate-pulse h-8 bg-gray-200 rounded"></div>}>
                 <Pagination
                   currentPage={currentPage}
@@ -132,9 +119,8 @@ const TaskList: React.FC = () => {
           )}
         </div>
 
-        {/* Estadísticas */}
         {tasks.length > 0 && (
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="mt-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
               <div className="text-center">
                 <div className="text-2xl font-bold text-gray-900">{tasks.length}</div>

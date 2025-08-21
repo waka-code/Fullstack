@@ -1,9 +1,7 @@
-/**
- * @vitest-environment jsdom
- */
+
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, cleanup } from '@testing-library/react'
-import Pagination from '../components/Pagination'
+import Pagination from '../../_designSystem/Pagination'
 
 describe('Pagination', () => {
   const mockOnPageChange = vi.fn()
@@ -116,7 +114,6 @@ describe('Pagination', () => {
   it('debería generar los números de página correctos para páginas centrales', () => {
     render(<Pagination {...defaultProps} currentPage={5} totalPages={10} />)
     
-    // Debería mostrar páginas 3, 4, 5, 6, 7 (5 páginas visibles centradas en 5)
     expect(screen.getByText('3')).toBeDefined()
     expect(screen.getByText('4')).toBeDefined()
     expect(screen.getByText('5')).toBeDefined()
@@ -127,7 +124,6 @@ describe('Pagination', () => {
   it('debería generar los números de página correctos al inicio', () => {
     render(<Pagination {...defaultProps} currentPage={1} totalPages={10} />)
     
-    // Debería mostrar páginas 1, 2, 3, 4, 5
     expect(screen.getByText('1')).toBeDefined()
     expect(screen.getByText('2')).toBeDefined()
     expect(screen.getByText('3')).toBeDefined()
@@ -138,7 +134,6 @@ describe('Pagination', () => {
   it('debería generar los números de página correctos al final', () => {
     render(<Pagination {...defaultProps} currentPage={10} totalPages={10} />)
     
-    // Debería mostrar páginas 6, 7, 8, 9, 10
     expect(screen.getByText('6')).toBeDefined()
     expect(screen.getByText('7')).toBeDefined()
     expect(screen.getByText('8')).toBeDefined()

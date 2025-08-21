@@ -20,8 +20,8 @@ function useTaskList() {
  const [isCreating, setIsCreating] = useState<boolean>(true);
 
  useEffect(() => {
-  fetchTasks();
- }, [fetchTasks]);
+  fetchTasks(1);
+ }, []);
 
  const handleCreateTask = useCallback(async (taskData: TaskFormData) => {
   try {
@@ -47,6 +47,7 @@ function useTaskList() {
  const handleEditTask = useCallback((task: Task) => {
   setEditingTask(task);
   setIsCreating(false);
+  console.log('Editando tarea:', task);
  }, []);
 
  const handleCancelEdit = useCallback(() => {
