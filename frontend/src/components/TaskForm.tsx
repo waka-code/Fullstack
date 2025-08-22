@@ -13,7 +13,7 @@ export interface TaskFormProps {
 const TaskForm: React.FC<TaskFormProps> = ({
   onSubmit,
   loading = false,
-  initialValues = { name: '', completed: false },
+  initialValues = { name: undefined, completed: false },
   submitButtonText = 'Create Task',
   onCancel
 }) => {
@@ -75,7 +75,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
           <Button
             type="submit"
             variant="primary"
-            disabled={loading || !formData.name.trim()}
+            disabled={loading || !formData.name?.trim()}
             loading={loading}
             fullWidth
           >

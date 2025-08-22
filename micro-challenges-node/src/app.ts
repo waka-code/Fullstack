@@ -1,17 +1,26 @@
 import express from 'express';
-import hmacRouter from './challenges/hmac';
-import paginationRouter from './challenges/pagination';
-import performanceRouter from './challenges/performance';
+import helmet from './middleware/helmet';
+import cors from './middleware/cors';
+import logger from './middleware/logger';
+import rateLimiter from './middleware/rateLimiter';
+import notFound from './middleware/notFound';
+import errorHandler from './middleware/errorHandler';
+
+import router, { hmacRawBodySaver } from './challenges/hmac';
+import performance from './challenges/performance';
 
 const app = express();
 
-app.use(express.json());
-app.use('/hmac', hmacRouter);
-app.use('/pagination', paginationRouter);
-app.use('/performance', performanceRouter);
+app.use(helmet);
+app.use(cors);
+app.use(logger);
+app.use(rateLimiter);
+app.use(express.json({ verify: hmacRawBodySaver }));
 
-app.get('/', (_req, res) => {
-  res.json({ message: 'Micro-challenges Node.js API' });
-});
+app.use('/hmac', router);
+app.use('/performance', performance);
+
+app.use(notFound);
+app.use(errorHandler);
 
 export default app;

@@ -2,7 +2,6 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APITestCase
 from rest_framework import status
-from django.core.cache import cache
 from .models import Task
 
 class TaskModelTest(TestCase):
@@ -110,39 +109,7 @@ class TaskAPITest(APITestCase):
         
         self.task.refresh_from_db()
         self.assertTrue(self.task.completed)
-    
-    def test_get_completed_tasks(self):
-        Task.objects.create(name='Completed Task', completed=True)
-        
-        url = reverse('task-completed')
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
-        for task in response.data['results']:
-            self.assertTrue(task['completed'])
-    
-    def test_get_pending_tasks(self):
-        url = reverse('task-pending')
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
-        for task in response.data['results']:
-            self.assertFalse(task['completed'])
-    
-    def test_get_task_stats(self):
-        Task.objects.create(name='Completed Task 1', completed=True)
-        Task.objects.create(name='Completed Task 2', completed=True)
-        Task.objects.create(name='Pending Task', completed=False)
-        
-        url = '/api/tasks/stats/'
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
-        self.assertIn('total', response.data)
-        self.assertIn('completed', response.data)
-        self.assertIn('pending', response.data)
-        self.assertIn('completion_rate', response.data)
-    
+  
     def test_create_task_validation_error(self):
         url = reverse('task-list')
         data = {'name': ''}

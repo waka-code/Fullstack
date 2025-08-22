@@ -32,10 +32,11 @@ export function useTaskList() {
     try {
       await createTask(taskData);
       setIsCreating(true);
+      fetchAllTasks();
     } catch (error) {
       console.error('Error creating task:', error);
     }
-  }, [createTask]);
+  }, [createTask, fetchAllTasks]);
 
   const handleUpdateTask = useCallback(async (taskData: TaskFormData) => {
     if (!editingTask?.id) return;

@@ -7,7 +7,7 @@ export interface Task {
 }
 
 export interface TaskFormData {
-  name: string;
+  name: string | undefined;
   completed: boolean;
 }
 

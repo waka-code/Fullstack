@@ -5,7 +5,7 @@ import { useTaskForm } from '../hooks/useTaskForm';
 
 vi.mock('../hooks/useTaskForm', () => ({
  useTaskForm: vi.fn(() => ({
-  formData: { name: '', completed: false },
+  formData: { name: undefined, completed: false },
   errors: {},
   handleInputChange: vi.fn(),
   handleSubmit: vi.fn((e) => e.preventDefault()),
@@ -20,7 +20,7 @@ describe('TaskForm', () => {
  const defaultProps: TaskFormProps = {
   onSubmit: vi.fn(),
   loading: false,
-  initialValues: { name: '', completed: false },
+  initialValues: { name: undefined, completed: false },
   submitButtonText: 'Create Task',
  };
 
@@ -32,7 +32,7 @@ describe('TaskForm', () => {
   render(<TaskForm {...defaultProps} />);
 
   expect(screen.getByText('New Task')).toBeInTheDocument();
-  expect(screen.getByLabelText('Task Name *')).toHaveValue('');
+  expect(screen.getByLabelText('Task Name *')).toHaveValue("");
   expect(screen.getByLabelText('Mark as completed')).not.toBeChecked();
   expect(screen.getByText('Create Task')).toBeInTheDocument();
  });
@@ -59,7 +59,7 @@ describe('TaskForm', () => {
  it('calls handleInputChange when typing in name input', () => {
   const mockHandleInputChange = vi.fn();
   vi.mocked(useTaskForm).mockReturnValue({
-   formData: { name: '', completed: false },
+   formData: { name: undefined, completed: false },
    errors: {},
    handleInputChange: mockHandleInputChange,
    handleSubmit: vi.fn(),
@@ -75,7 +75,7 @@ describe('TaskForm', () => {
 
  it('disables submit button when name is empty', () => {
   vi.mocked(useTaskForm).mockReturnValue({
-   formData: { name: '', completed: false },
+   formData: { name: undefined, completed: false },
    errors: {},
    handleInputChange: vi.fn(),
    handleSubmit: vi.fn(),
@@ -99,7 +99,7 @@ describe('TaskForm', () => {
 
  it('displays error message when errors.name exists', () => {
   vi.mocked(useTaskForm).mockReturnValue({
-   formData: { name: '', completed: false },
+   formData: { name: undefined, completed: false },
    errors: { name: 'Task name is required' },
    handleInputChange: vi.fn(),
    handleSubmit: vi.fn(),

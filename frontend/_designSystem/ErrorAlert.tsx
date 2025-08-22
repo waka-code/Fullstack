@@ -5,7 +5,7 @@ interface ErrorAlertProps {
   className?: string;
 }
 
-const ErrorAlert: React.FC<ErrorAlertProps> = ({ message, className = '' }) => {
+const ErrorAlert: React.FC<ErrorAlertProps> = ({ message, className }) => {
   return (
     <div className={`mb-6 p-4 bg-red-50 border border-red-200 rounded-lg ${className}`}>
       <div className="flex">

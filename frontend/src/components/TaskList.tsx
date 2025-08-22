@@ -45,7 +45,7 @@ const TaskList: React.FC = () => {
             initialValues={
               editingTask
                 ? { name: editingTask.name, completed: editingTask.completed }
-                : { name: '', completed: false }
+                : { name: "", completed: false }
             }
             submitButtonText={isCreating ? 'Create Task' : 'Update Task'}
             onCancel={!isCreating ? handleCancelEdit : undefined}

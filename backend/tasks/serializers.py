@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import Task
 
-
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
@@ -16,10 +15,3 @@ class TaskSerializer(serializers.ModelSerializer):
         if Task.objects.filter(name=value).exists():
             raise serializers.ValidationError("A task with this name already exists.")
         return value.strip()
-
-
-class TaskStatsSerializer(serializers.Serializer):
-    total = serializers.IntegerField()
-    completed = serializers.IntegerField()
-    pending = serializers.IntegerField()
-    completion_rate = serializers.FloatField()

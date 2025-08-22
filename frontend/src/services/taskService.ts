@@ -45,11 +45,6 @@ export const taskService = {
     return response.data;
   },
 
-  async patchTask(id: string, taskData: Partial<TaskFormData>): Promise<Task> {
-    const response = await api.patch<Task>(`/tasks/${id}/`, taskData);
-    return response.data;
-  },
-
   async deleteTask(id: string): Promise<void> {
     await api.delete(`/tasks/${id}/`);
   },

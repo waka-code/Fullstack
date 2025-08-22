@@ -11,7 +11,7 @@ const IconButton: React.FC<IconButtonProps> = ({
   variant = 'edit',
   loading = false,
   disabled,
-  className = '',
+  className,
   children,
   size = 'md',
   ...props
@@ -33,7 +33,7 @@ const IconButton: React.FC<IconButtonProps> = ({
     ${baseClasses}
     ${variantClasses[variant]}
     ${sizeClasses[size]}
-    ${loading || disabled ? 'cursor-not-allowed opacity-50' : ''}
+    ${loading || disabled ? 'cursor-not-allowed opacity-50' : undefined}
     ${className}
   `.trim();
 

@@ -22,7 +22,7 @@ const Button: React.FC<ButtonProps> = ({
   rightIcon,
   fullWidth = false,
   disabled,
-  className = '',
+  className = undefined,
   children,
   ...props
 }) => {
@@ -52,7 +52,7 @@ const Button: React.FC<ButtonProps> = ({
     ${baseClasses}
     ${variantClasses[variant]}
     ${sizeClasses[size]}
-    ${fullWidth ? 'w-full' : ''}
+    ${fullWidth ? 'w-full' : undefined}
     ${className}
   `.trim();
 

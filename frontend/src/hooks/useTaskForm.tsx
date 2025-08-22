@@ -5,13 +5,13 @@ import { useLocation } from 'react-router-dom';
 
 export function useTaskForm({
   onSubmit,
-  initialValues = { name: '', completed: false },
+  initialValues = { name: undefined, completed: false },
 }: TaskFormProps) {
   const location = useLocation();
   const taskFromState = location.state?.task;
 
   const [formData, setFormData] = useState<TaskFormData>(initialValues);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [errors, setErrors] = useState<{ [key: string]: string | undefined }>({});
 
   useEffect(() => {
     if (taskFromState) {
@@ -22,7 +22,7 @@ export function useTaskForm({
   const validateForm = useCallback((): boolean => {
     const newErrors: { [key: string]: string } = {};
 
-    if (!formData.name.trim()) {
+    if (!formData.name?.trim()) {
       newErrors.name = 'Task name is required';
     } else if (formData.name.trim().length < 3) {
       newErrors.name = 'Name must be at least 3 characters long';
@@ -43,16 +43,16 @@ export function useTaskForm({
 
     try {
       await onSubmit({
-        name: formData.name.trim(),
+        name: formData.name?.trim(),
         completed: formData.completed
       });
 
       if (!initialValues.name) {
-        setFormData({ name: '', completed: false });
+        setFormData({ name: "", completed: false });
       }
 
       setErrors({});
-      setFormData({ name: '', completed: false });
+      setFormData({ name: "", completed: false });
     } catch (error) {
       console.error('Error submitting form:', error);
     }
@@ -66,7 +66,7 @@ export function useTaskForm({
     }));
 
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+      setErrors(prev => ({ ...prev, [name]: undefined }));
     }
   }, [errors]);
 

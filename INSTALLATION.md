@@ -29,14 +29,6 @@ URLs:
 npm run setup
 ```
 
-Este comando ejecuta:
-
-- Instalación de dependencias Python del backend
-- Creación y aplicación de migraciones Django
-- Instalación de dependencias npm del frontend
-
-Luego ejecutar en terminales separadas:
-
 ```bash
 npm run start:backend
 npm run start:frontend
@@ -46,13 +38,12 @@ npm run start:frontend
 
 ```bash
 # Docker
-npm run docker:setup    # Construir y levantar
-npm run docker:up       # Levantar servicios
-npm run docker:down     # Parar servicios
-npm run docker:logs     # Ver logs
+npm run docker:setup    # Build and start
+npm run docker:up       # Start services
+npm run docker:down     # Stop services
+npm run docker:logs     # View logs
 
 # Local
-npm run setup           # Configurar proyecto
-npm run start:backend   # Solo backend
-npm run start:frontend  # Solo frontend
-```
+npm run setup           # Set up project
+npm run start:backend   # Backend only
+npm run

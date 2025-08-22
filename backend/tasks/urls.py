@@ -16,7 +16,4 @@ urlpatterns = [
 # PUT    /api/tasks/{id}/      - Update complete task
 # PATCH  /api/tasks/{id}/      - Update partial task
 # DELETE /api/tasks/{id}/      - Delete task
-# POST   /api/tasks/{id}/toggle/ - Toggle completion status
-# GET    /api/tasks/completed/ - List only completed tasks
-# GET    /api/tasks/pending/   - List only pending tasks
-# GET    /api/tasks/stats/     - Get task statistics
+# GET    /api/tasks/all/       - List all tasks (custom, no

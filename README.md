@@ -1,4 +1,3 @@
-
 # Full Stack Task Manager
 
 Aplicación completa de gestión de tareas con React + Vite + TypeScript + Tailwind CSS en el frontend, Django + Django REST Framework en el backend y challenges en Node.js para retos técnicos.
@@ -6,14 +5,17 @@ Aplicación completa de gestión de tareas con React + Vite + TypeScript + Tailw
 ## Tecnologías principales
 
 ### Frontend
+
 - React 18, Vite, TypeScript, Tailwind CSS
 - Testing: Vitest, Testing Library
 
 ### Backend
+
 - Django 4, Django REST Framework, SQLite
 - Validaciones, paginación, CORS, filtros y búsquedas
 
 ### Backend Node.js
+
 - Express, TypeScript, Jest, Axios
 
 ## Estructura del proyecto
@@ -25,6 +27,7 @@ Aplicación completa de gestión de tareas con React + Vite + TypeScript + Tailw
 ## Instalación y ejecución
 
 ### Requisitos
+
 - Node.js >= 16
 - Python >= 3.8
 - pip
@@ -37,6 +40,7 @@ npm run docker:setup
 ```
 
 Acceso:
+
 - Frontend: http://localhost:5173
 - Backend API: http://localhost:8000
 - Django Admin: http://localhost:8000/admin
@@ -59,17 +63,17 @@ npm run setup
 npm run setup:backend
 # Frontend: instalar dependencias
 npm run setup:frontend
-# Microservicio Node: instalar y compilar
+# Node: instalar y compilar
 npm run setup:micro
 
 # Iniciar backend
 npm run start:backend
 # Iniciar frontend
 npm run start:frontend
-# Iniciar microservicio Node en modo dev
+# Iniciar Node en modo dev
 cd micro-challenges-node && npm run dev
 
-# Pruebas microservicio Node
+# Pruebas Node
 cd micro-challenges-node && npm test
 ```
 
@@ -96,11 +100,15 @@ npm run test:ui
 npm run test:coverage
 ```
 
-### Microservicio Node
+### Node
 
 ```bash
 cd micro-challenges-node
 npm test
+
+npm run dev
+npm run script:hmac
+npm run script:performance
 ```
 
 ## Endpoints principales API
@@ -112,8 +120,7 @@ npm test
 - `DELETE /api/tasks/{id}/` - Eliminar tarea
 - `GET /api/tasks/completed/` - Listar solo completadas
 - `GET /api/tasks/pending/` - Listar solo pendientes
-- `GET /api/tasks/stats/` - Estadísticas generales
-- `DELETE /api/tasks/clear_completed/` - Eliminar todas completadas
+
 
 ## Notas técnicas
 
@@ -124,16 +131,3 @@ npm test
 - Tailwind CSS está configurado vía Vite.
 - CORS está habilitado para desarrollo.
 
-## Estructura de carpetas relevante
-
-- `frontend/src/components/` - Componentes principales
-- `frontend/src/context/` - Contexto global de tareas
-- `frontend/src/services/` - Servicios de API
-- `frontend/src/test/` - Pruebas unitarias e integración
-- `backend/tasks/` - Lógica de modelo, vistas y serializadores
-- `challenges-node/src/` - Código fuente
-
-## Para producción
-
-Revisar variables de entorno y configuración de seguridad antes de desplegar en producción.
-- `DELETE /api/tasks/{id}/` - Delete task

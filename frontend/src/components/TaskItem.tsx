@@ -32,7 +32,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
     <div className={`
       card transition-all duration-200 hover:shadow-lg 
       ${task.completed ? 'bg-green-50 border-green-200' : 'bg-white border-gray-200'}
-      ${loading ? 'opacity-50 pointer-events-none' : ''}
+      ${loading ? 'opacity-50 pointer-events-none' : undefined}
     `}>
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3 flex-1 p-1">
