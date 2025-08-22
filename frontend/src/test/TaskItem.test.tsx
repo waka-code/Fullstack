@@ -14,7 +14,7 @@ vi.mock('../hooks/useTaskItem', () => ({
 }));
 
 vi.mock('../asset/svg/IconCompleted', () => ({
-  IconCompleted: ({ loading, onclick, isCompleted }: any) => (
+  IconCompleted: ({ loading, onclick, isCompleted }: { loading: boolean; onclick: () => void; isCompleted: boolean }) => (
     <button data-testid="completed-icon" disabled={loading} onClick={onclick}>
       {isCompleted ? 'Completed' : 'Not Completed'}
     </button>
@@ -22,7 +22,7 @@ vi.mock('../asset/svg/IconCompleted', () => ({
 }));
 
 vi.mock('../asset/svg/IconEdit', () => ({
-  IconEdit: ({ loading, onclick }: any) => (
+  IconEdit: ({ loading, onclick }: { loading: boolean; onclick: () => void }) => (
     <button data-testid="edit-icon" disabled={loading} onClick={onclick}>
       Edit
     </button>
@@ -30,7 +30,7 @@ vi.mock('../asset/svg/IconEdit', () => ({
 }));
 
 vi.mock('../asset/svg/IconDelete', () => ({
-  IconDelete: ({ loading, onclick }: any) => (
+  IconDelete: ({ loading, onclick }: { loading: boolean; onclick: () => void }) => (
     <button data-testid="delete-icon" disabled={loading} onClick={onclick}>
       Delete
     </button>
@@ -39,7 +39,7 @@ vi.mock('../asset/svg/IconDelete', () => ({
 
 // Mock the ConfirmPopover component
 vi.mock('../../_designSystem/ConfirmPopover', () => ({
-  ConfirmPopover: ({ open, message, onConfirm, onCancel }: any) =>
+  ConfirmPopover: ({ open, message, onConfirm, onCancel }: { open: boolean; message: string; onConfirm: () => void; onCancel: () => void }) =>
     open ? (
       <div data-testid="confirm-popover">
         <p>{message}</p>

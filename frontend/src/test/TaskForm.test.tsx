@@ -13,7 +13,7 @@ vi.mock('../hooks/useTaskForm', () => ({
 }));
 
 vi.mock('../../_designSystem/Button', () => ({
- default: ({ children, loading, fullWidth, ...props }: any) => <button {...props}>{children}</button>,
+ default: ({ children, loading, fullWidth, ...props }:{ children: React.ReactNode, loading?: boolean, fullWidth?: boolean }) => <button {...props}>{children}</button>,
 }));
 
 describe('TaskForm', () => {

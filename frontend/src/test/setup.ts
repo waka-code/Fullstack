@@ -3,7 +3,7 @@ import { afterAll, beforeAll } from 'vitest'
 
 const originalError = console.error
 beforeAll(() => {
-  console.error = (...args: any) => {
+  console.error = (...args) => {
     if (
       typeof args[0] === 'string' &&
       args[0].includes('Warning: ReactDOM.render is no longer supported')

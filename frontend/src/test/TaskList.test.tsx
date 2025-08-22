@@ -26,7 +26,7 @@ vi.mock('../hooks/useTaskList', () => ({
 }));
 
 vi.mock('./TaskForm', () => ({
-  default: ({ submitButtonText, onCancel }: any) => (
+  default: ({ submitButtonText, onCancel }: { submitButtonText: string; onCancel?: () => void }) => (
     <div data-testid="task-form">
       TaskForm: {submitButtonText}
       {onCancel && <button data-testid="cancel-button">Cancel</button>}
@@ -35,7 +35,7 @@ vi.mock('./TaskForm', () => ({
 }));
 
 vi.mock('./TaskItem', () => ({
-  default: ({ task }: any) => (
+  default: ({ task }: { task: Task }) => (
     <div data-testid={`task-item-${task.id}`}>
       Task: {task.name} ({task.completed ? 'Completed' : 'Pending'})
     </div>
@@ -43,7 +43,7 @@ vi.mock('./TaskItem', () => ({
 }));
 
 vi.mock('../../_designSystem/ErrorAlert', () => ({
-  default: ({ message }: any) => <div data-testid="error-alert">{message}</div>,
+  default: ({ message }: { message: string }) => <div data-testid="error-alert">{message}</div>,
 }));
 
 vi.mock('../../_designSystem/LoadingSpinner', () => ({
@@ -51,7 +51,7 @@ vi.mock('../../_designSystem/LoadingSpinner', () => ({
 }));
 
 vi.mock('../../_designSystem/Pagination', () => ({
-  default: ({ currentPage, totalPages }: any) => (
+  default: ({ currentPage, totalPages }: { currentPage: number; totalPages: number }) => (
     <div data-testid="pagination">Page {currentPage} of {totalPages}</div>
   ),
 }));
